@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agentstack"
+version = "0.1.0"
+description = "A production-ready starter kit for building agentic systems at scale"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "SynapseVibe Labs", email = "hello@synapsevibe.com"}
+]
+keywords = [
+    "agents",
+    "ai",
+    "llm",
+    "orchestration",
+    "mcp",
+    "agentic"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "httpx>=0.27.0",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "black>=24.0",
+    "ruff>=0.4",
+    "mypy>=1.0",
+]
+
+[project.urls]
+Homepage = "https://synapsevibe.com"
+Documentation = "https://synapsevibe.com/docs"
+Repository = "https://github.com/synapsevibe-labs/agentstack"
+Issues = "https://github.com/synapsevibe-labs/agentstack/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["agentstack"]
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+
+[tool.ruff]
+line-length = 100
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
