@@ -1,5 +1,5 @@
 # ArQon Agentics — Substack Setup Guide
-## Publication: arqonagentics.substack.com
+## Publication: arqonai.substack.com
 
 ---
 
@@ -84,7 +84,7 @@ Here's what to expect:
 
 While you wait for the next issue, check out:
 - AgentStack (our open-source starter kit): github.com/ArQon-ai/agentstack
-- Our latest content: arqonagentics.substack.com/archive
+- Our latest content: arqonai.substack.com/archive
 - Follow us on Twitter: @ArQon_ai86
 
 Talk soon,

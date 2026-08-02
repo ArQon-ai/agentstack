@@ -130,4 +130,4 @@ We predict MCP will become the de facto standard for AI tool integration by 2027
 
 ---
 
-*Want to go deeper? Subscribe to [The SynapseVibe Dispatch](https://arqonagentics.substack.com) for weekly agentic engineering insights.*
+*Want to go deeper? Subscribe to [The SynapseVibe Dispatch](https://arqonai.substack.com) for weekly agentic engineering insights.*
