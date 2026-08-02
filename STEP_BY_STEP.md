@@ -178,7 +178,7 @@ If you want more automation:
 
 ### Twitter/X Profile:
 - **Name:** ArQon Agentics
-- **Handle:** @arqonagentics
+- **Handle:** @ArQon_ai86
 - **Bio:** Copy from `ready-to-post/twitter-bio.txt`
 - **Website:** arqonagentics.com (or Vercel URL)
 - **Header:** Create simple branded image (dark theme, logo text)
@@ -283,7 +283,7 @@ vercel --prod
 - Use Vercel's free SSL (automatic)
 
 ### "Twitter username taken":
-Try: @arqonagentics_labs, @sv_labs, @arqonagenticstech, @buildwitharqon
+Try: @ArQon_ai86_labs, @sv_labs, @ArQon_ai86tech, @buildwitharqon
 
 ### "Substack name taken":
 Try: arqon-tech, arqon-agentics, the-arqon-dispatch

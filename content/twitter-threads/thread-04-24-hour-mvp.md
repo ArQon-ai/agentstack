@@ -97,7 +97,7 @@ Platform engineering gets you to production.
 
 You need both.
 
-We're building tools that bridge the gap → @arqonagentics
+We're building tools that bridge the gap → @ArQon_ai86
 
 Full write-up → arqonagentics.com/blog/24-hour-mvp
 

@@ -148,4 +148,4 @@ The future belongs to those who can orchestrate agents, not just code them.
 
 *This is Chapter 1 of The Agentic Engineer's Playbook. Get the full book at [arqonagentics.com](https://arqonagentics.com).*
 
-*Follow us on [Twitter](https://twitter.com/arqonagentics) and subscribe to [The Dispatch](https://arqonagentics.substack.com) for weekly agentic engineering insights.*
+*Follow us on [Twitter](https://twitter.com/ArQon_ai86) and subscribe to [The Dispatch](https://arqonagentics.substack.com) for weekly agentic engineering insights.*

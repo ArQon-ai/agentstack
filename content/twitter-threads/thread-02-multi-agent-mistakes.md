@@ -93,7 +93,7 @@ They need:
 • Observability
 • Governance
 
-We're building open-source tools for this at @arqonagentics.
+We're building open-source tools for this at @ArQon_ai86.
 
 Star the repo → github.com/arqon-agentics/agentstack
 

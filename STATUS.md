@@ -77,7 +77,7 @@
 ### Critical Path Items
 - [ ] **Buy domain: arqonagentics.com** (~$10-15/year)
 - [ ] **Create GitHub org: arqon-agentics**
-- [ ] **Create Twitter/X account: @arqonagentics**
+- [ ] **Create Twitter/X account: @ArQon_ai86**
 - [ ] **Create Substack: arqonagentics**
 - [ ] **Create LinkedIn company page**
 - [ ] **Create Gumroad account** (for digital products)
@@ -139,7 +139,7 @@ projects/agentic-cashflow/
 ### YOUR TASKS (5 minutes each):
 1. Buy arqonagentics.com domain
 2. Create GitHub org "arqon-agentics"
-3. Create Twitter account @arqonagentics
+3. Create Twitter account @ArQon_ai86
 4. Create Substack account
 5. Create Gumroad account
 

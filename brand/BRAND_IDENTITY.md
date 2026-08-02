@@ -87,7 +87,7 @@
 
 ## Social Presence
 
-**Twitter/X:** @arqonagentics — Hot takes, quick tips, project updates
+**Twitter/X:** @ArQon_ai86 — Hot takes, quick tips, project updates
 **GitHub:** arqon-agentics — Open source projects
 **Substack:** The SynapseVibe Dispatch — Weekly deep-dives
 **Website:** arqonagentics.com — Landing page, blog, products
@@ -99,7 +99,7 @@
 —
 ArQon Agentics
 Where agentic infrastructure meets creative velocity.
-arqonagentics.com | @arqonagentics
+arqonagentics.com | @ArQon_ai86
 ```
 
 ## One-Liner Pitch

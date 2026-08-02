@@ -100,7 +100,7 @@ You're early. The wave is building.
 
 **Tweet 8/8:**
 
-We're building open-source tools for agentic platforms at @arqonagentics.
+We're building open-source tools for agentic platforms at @ArQon_ai86.
 
 Follow for weekly deep-dives on agentic engineering, vibe coding, and the infrastructure that makes it all work.
 

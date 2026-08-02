@@ -185,7 +185,7 @@ MIT License — see [LICENSE](LICENSE) for details.
 AgentStack is built by [ArQon Agentics](https://arqonagentics.com), a collective of platform engineers and vibe coders shipping the future of agentic infrastructure.
 
 - 🌐 [Website](https://arqonagentics.com)
-- 🐦 [Twitter](https://twitter.com/arqonagentics)
+- 🐦 [Twitter](https://twitter.com/ArQon_ai86)
 - 📧 [Newsletter](https://arqonagentics.substack.com)
 
 ---

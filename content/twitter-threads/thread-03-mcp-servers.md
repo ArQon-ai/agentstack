@@ -58,7 +58,7 @@ File system. Database. APIs. Communication tools.
 
 All standardized. All observable. All governed.
 
-Open-source toolkit coming soon from @arqonagentics.
+Open-source toolkit coming soon from @ArQon_ai86.
 
 ---
 

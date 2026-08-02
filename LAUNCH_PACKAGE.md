@@ -78,7 +78,7 @@
 - Push the code I built
 
 ### Step 3: Create Social Accounts (10 min, FREE)
-- **Twitter/X:** @arqonagentics
+- **Twitter/X:** @ArQon_ai86
 - **LinkedIn:** Company page "ArQon Agentics"
 - **Substack:** arqonagentics.substack.com
 - Use the brand colors (void black #0A0A0F, indigo #6366F1, cyan #22D3EE)

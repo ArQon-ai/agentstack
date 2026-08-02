@@ -198,4 +198,4 @@ results = await workflow.run(topic="Multi-Agent Systems")
 
 ---
 
-*Building multi-agent systems? We can help. [Contact ArQon Agentics](mailto:hello@arqonagentics.com) for architecture reviews and implementation support.*
+*Building multi-agent systems? We can help. [Contact ArQon Agentics](mailto:hello@ArQon_ai86.com) for architecture reviews and implementation support.*
