@@ -97,9 +97,9 @@ Platform engineering gets you to production.
 
 You need both.
 
-We're building tools that bridge the gap → @synapsevibe
+We're building tools that bridge the gap → @arqonagentics
 
-Full write-up → synapsevibe.com/blog/24-hour-mvp
+Full write-up → arqonagentics.com/blog/24-hour-mvp
 
 ---
 

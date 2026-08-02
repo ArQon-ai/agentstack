@@ -9,7 +9,7 @@
 
 ## 📦 WHAT'S BEEN BUILT
 
-### 1. BRAND — SynapseVibe Labs ✅
+### 1. BRAND — ArQon Agentics ✅
 - Complete brand identity (colors, fonts, voice, messaging)
 - Tagline: "Where agentic infrastructure meets creative velocity"
 - Anonymous collective persona — no faces needed
@@ -68,19 +68,19 @@
 
 ### Step 1: Buy Domain (5 min, ~$12)
 - Go to Namecheap, Cloudflare, or your preferred registrar
-- Buy: **synapsevibe.com**
-- Alternative if taken: synapsevibe.io, synapsevibe.dev, synapsevibetech.com
+- Buy: **arqonagentics.com**
+- Alternative if taken: arqonagentics.io, arqonagentics.dev, arqonagenticstech.com
 
 ### Step 2: Create GitHub Org (5 min, FREE)
 - Go to github.com
-- Create organization: **synapsevibe-labs**
+- Create organization: **arqon-agentics**
 - Create repository: **agentstack**
 - Push the code I built
 
 ### Step 3: Create Social Accounts (10 min, FREE)
-- **Twitter/X:** @synapsevibe
-- **LinkedIn:** Company page "SynapseVibe Labs"
-- **Substack:** synapsevibe.substack.com
+- **Twitter/X:** @arqonagentics
+- **LinkedIn:** Company page "ArQon Agentics"
+- **Substack:** arqonagentics.substack.com
 - Use the brand colors (void black #0A0A0F, indigo #6366F1, cyan #22D3EE)
 
 ### Step 4: Create Gumroad Account (5 min, FREE)
@@ -199,7 +199,7 @@ While you do the 5-minute tasks, I'm building:
 Since you want to stay anonymous:
 
 1. **No personal photos** — Use AI-generated avatar or abstract logo
-2. **No real name** — "SynapseVibe Labs Team" or just the brand
+2. **No real name** — "ArQon Agentics Team" or just the brand
 3. **No personal details** — Location, background, etc. stay vague
 4. **Collective voice** — Always "we", never "I"
 5. **Async communication** — Email, forms, docs. Avoid video calls if possible
@@ -276,4 +276,4 @@ Let's go. ⚡
 
 ---
 
-*SynapseVibe Labs — Built by AI, run by humans, profitable by design.*
+*ArQon Agentics — Built by AI, run by humans, profitable by design.*

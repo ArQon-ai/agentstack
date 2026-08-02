@@ -173,7 +173,7 @@ When you "forget the code exists" (Karpathy's words), you also forget:
 
 **The solution:** Combine vibe coding with agentic platform engineering. Use vibe tools to write fast, then use platform tools to deploy safely.
 
-That's exactly what we built [AgentStack](https://github.com/synapsevibe-labs/agentstack) for.
+That's exactly what we built [AgentStack](https://github.com/arqon-agentics/agentstack) for.
 
 ---
 
@@ -188,4 +188,4 @@ The vibe coding landscape changes weekly. Here's what we're watching:
 
 ---
 
-*SynapseVibe Labs builds production-grade agentic systems. Follow us on [Twitter](https://twitter.com/synapsevibe) or subscribe to [The Dispatch](https://synapsevibe.substack.com) for weekly updates.*
+*ArQon Agentics builds production-grade agentic systems. Follow us on [Twitter](https://twitter.com/arqonagentics) or subscribe to [The Dispatch](https://arqonagentics.substack.com) for weekly updates.*

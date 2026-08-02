@@ -1,10 +1,10 @@
-# Content Calendar — SynapseVibe Labs
+# Content Calendar — ArQon Agentics
 ## August 2026
 
 ### Week 1 (Aug 3-9): Launch Week
 
 **Monday, Aug 3**
-- [x] Brand identity finalized — SynapseVibe Labs
+- [x] Brand identity finalized — ArQon Agentics
 - [x] Landing page built and deployed
 - [x] Newsletter Issue #0 published
 - [x] GitHub org created
@@ -132,7 +132,7 @@
 - [ ] Product update: Playbook v1.1
 
 **Friday, Aug 28**
-- [ ] Blog post: "Building in Public: Month 1 of SynapseVibe Labs"
+- [ ] Blog post: "Building in Public: Month 1 of ArQon Agentics"
 - [ ] Twitter/X: Transparent metrics thread
 - [ ] GitHub: Community contributions review
 

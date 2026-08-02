@@ -58,7 +58,7 @@ File system. Database. APIs. Communication tools.
 
 All standardized. All observable. All governed.
 
-Open-source toolkit coming soon from @synapsevibe.
+Open-source toolkit coming soon from @arqonagentics.
 
 ---
 
@@ -70,7 +70,7 @@ You're building on quicksand.
 
 Learn it now. Thank yourself later.
 
-Full guide → synapsevibe.com/blog/mcp-servers-explained
+Full guide → arqonagentics.com/blog/mcp-servers-explained
 
 ---
 

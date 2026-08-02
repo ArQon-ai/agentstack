@@ -69,7 +69,7 @@ We're saying: build the platform FIRST, then deploy the tools ON it.
 
 Your future self will thank you.
 
-Building agentic platforms → @synapsevibe
+Building agentic platforms → @arqonagentics
 
 ---
 

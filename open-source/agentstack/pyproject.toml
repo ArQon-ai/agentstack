@@ -10,7 +10,7 @@ readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.10"
 authors = [
-    {name = "SynapseVibe Labs", email = "hello@synapsevibe.com"}
+    {name = "ArQon Agentics", email = "hello@arqonagentics.com"}
 ]
 keywords = [
     "agents",
@@ -45,10 +45,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://synapsevibe.com"
-Documentation = "https://synapsevibe.com/docs"
-Repository = "https://github.com/synapsevibe-labs/agentstack"
-Issues = "https://github.com/synapsevibe-labs/agentstack/issues"
+Homepage = "https://arqonagentics.com"
+Documentation = "https://arqonagentics.com/docs"
+Repository = "https://github.com/arqon-agentics/agentstack"
+Issues = "https://github.com/arqon-agentics/agentstack/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["agentstack"]

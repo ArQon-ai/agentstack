@@ -4,7 +4,7 @@ Hi [Name],
 
 I came across your post about [specific topic — AI strategy, scaling challenges, etc.] and wanted to reach out.
 
-We're SynapseVibe Labs — a collective of platform engineers and vibe coders who specialize in building production-grade agentic systems. We've deployed multi-agent infrastructure for [types of companies if applicable], and we've seen the same patterns succeed (and fail).
+We're ArQon Agentics — a collective of platform engineers and vibe coders who specialize in building production-grade agentic systems. We've deployed multi-agent infrastructure for [types of companies if applicable], and we've seen the same patterns succeed (and fail).
 
 A few things we've noticed most teams struggle with:
 
@@ -24,7 +24,7 @@ We'll send back a detailed review within 48 hours.
 
 Best,
 [Name]
-SynapseVibe Labs
-https://synapsevibe.com
+ArQon Agentics
+https://arqonagentics.com
 
-P.S. — We also publish weekly deep-dives on agentic engineering at [The Dispatch](https://synapsevibe.substack.com). Worth a read if this space interests you.
+P.S. — We also publish weekly deep-dives on agentic engineering at [The Dispatch](https://arqonagentics.substack.com). Worth a read if this space interests you.

@@ -169,7 +169,7 @@ Agents communicate directly with each other, no central coordinator.
 
 ## Code Example
 
-Using [AgentStack](https://github.com/synapsevibe-labs/agentstack):
+Using [AgentStack](https://github.com/arqon-agentics/agentstack):
 
 ```python
 from agentstack import Workflow, Agent
@@ -192,10 +192,10 @@ results = await workflow.run(topic="Multi-Agent Systems")
 
 ## Further Reading
 
-- [AgentStack Documentation](https://synapsevibe.com/docs)
+- [AgentStack Documentation](https://arqonagentics.com/docs)
 - [The Agentic Engineering Operating Model](https://www.augmentcode.com/guides/agentic-engineering-operating-model)
 - [Multi-Agent Reinforcement Learning](https://www.nature.com/articles/s41586-022-05607-9)
 
 ---
 
-*Building multi-agent systems? We can help. [Contact SynapseVibe Labs](mailto:hello@synapsevibe.com) for architecture reviews and implementation support.*
+*Building multi-agent systems? We can help. [Contact ArQon Agentics](mailto:hello@arqonagentics.com) for architecture reviews and implementation support.*

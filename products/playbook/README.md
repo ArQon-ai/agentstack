@@ -2,7 +2,7 @@
 
 > A comprehensive guide to building production-grade agentic systems — from first prototype to production deployment.
 
-**By SynapseVibe Labs**
+**By ArQon Agentics**
 
 ---
 
@@ -90,8 +90,8 @@ Most developers treat context windows as infinite. They're not. A 200K context w
 
 ## Get It Now
 
-Available on [Gumroad](https://synapsevibe.gumroad.com) (link coming soon).
+Available on [Gumroad](https://arqonagentics.gumroad.com) (link coming soon).
 
 ---
 
-*© 2026 SynapseVibe Labs. All rights reserved.*
+*© 2026 ArQon Agentics. All rights reserved.*

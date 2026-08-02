@@ -63,7 +63,7 @@ If you're a platform engineer today, this is your lane. If you're a vibe coder, 
 
 ### What We're Building
 
-At SynapseVibe Labs, we're building in the open. Over the next few weeks, we'll be releasing:
+At ArQon Agentics, we're building in the open. Over the next few weeks, we'll be releasing:
 
 1. **AgentStack** — An open-source starter kit for production agent infrastructure
 2. **VibeGuard** — Automated testing and review for AI-generated code
@@ -107,6 +107,6 @@ That's what we're here for.
 
 ---
 
-*SynapseVibe Labs — Where agentic infrastructure meets creative velocity.*
+*ArQon Agentics — Where agentic infrastructure meets creative velocity.*
 
 *Got feedback? Reply to this email. We're reading everything.*

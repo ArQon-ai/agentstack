@@ -2,14 +2,14 @@
 
 > A production-ready starter kit for building agentic systems at scale.
 
-[![GitHub stars](https://img.shields.io/github/stars/synapsevibe-labs/agentstack?style=social)](https://github.com/synapsevibe-labs/agentstack)
+[![GitHub stars](https://img.shields.io/github/stars/arqon-agentics/agentstack?style=social)](https://github.com/arqon-agentics/agentstack)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## What is AgentStack?
 
 AgentStack is an opinionated starter kit for building production-grade agentic systems. It bridges the gap between "vibe coding" a prototype and running agents reliably in production.
 
-Built by [SynapseVibe Labs](https://synapsevibe.com).
+Built by [ArQon Agentics](https://arqonagentics.com).
 
 ## Features
 
@@ -24,7 +24,7 @@ Built by [SynapseVibe Labs](https://synapsevibe.com).
 
 ```bash
 # Clone the starter kit
-git clone https://github.com/synapsevibe-labs/agentstack.git
+git clone https://github.com/arqon-agentics/agentstack.git
 cd agentstack
 
 # Copy environment template
@@ -180,13 +180,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 MIT License — see [LICENSE](LICENSE) for details.
 
-## About SynapseVibe Labs
+## About ArQon Agentics
 
-AgentStack is built by [SynapseVibe Labs](https://synapsevibe.com), a collective of platform engineers and vibe coders shipping the future of agentic infrastructure.
+AgentStack is built by [ArQon Agentics](https://arqonagentics.com), a collective of platform engineers and vibe coders shipping the future of agentic infrastructure.
 
-- 🌐 [Website](https://synapsevibe.com)
-- 🐦 [Twitter](https://twitter.com/synapsevibe)
-- 📧 [Newsletter](https://synapsevibe.substack.com)
+- 🌐 [Website](https://arqonagentics.com)
+- 🐦 [Twitter](https://twitter.com/arqonagentics)
+- 📧 [Newsletter](https://arqonagentics.substack.com)
 
 ---
 

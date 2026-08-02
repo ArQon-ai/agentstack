@@ -124,10 +124,10 @@ We predict MCP will become the de facto standard for AI tool integration by 2027
 
 ## Tools We Recommend
 
-- **[AgentStack](https://github.com/synapsevibe-labs/agentstack)** — Our open-source starter kit with built-in MCP support
+- **[AgentStack](https://github.com/arqon-agentics/agentstack)** — Our open-source starter kit with built-in MCP support
 - **mcp Python SDK** — Official SDK from Anthropic
 - **FastMCP** — Simplified Python framework for MCP servers
 
 ---
 
-*Want to go deeper? Subscribe to [The SynapseVibe Dispatch](https://synapsevibe.substack.com) for weekly agentic engineering insights.*
+*Want to go deeper? Subscribe to [The SynapseVibe Dispatch](https://arqonagentics.substack.com) for weekly agentic engineering insights.*

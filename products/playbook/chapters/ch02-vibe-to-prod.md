@@ -211,4 +211,4 @@ The world doesn't need more prototypes. It needs more shipped products.
 
 ---
 
-*This is Chapter 2 of The Agentic Engineer's Playbook. Get the full book at [synapsevibe.com](https://synapsevibe.com).*
+*This is Chapter 2 of The Agentic Engineer's Playbook. Get the full book at [arqonagentics.com](https://arqonagentics.com).*

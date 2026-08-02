@@ -1,6 +1,6 @@
 """
 AgentStack Core — Production-Ready Agent Runtime
-Built by SynapseVibe Labs
+Built by ArQon Agentics
 """
 
 from typing import Dict, List, Optional, Any, Callable

@@ -93,9 +93,9 @@ They need:
 • Observability
 • Governance
 
-We're building open-source tools for this at @synapsevibe.
+We're building open-source tools for this at @arqonagentics.
 
-Star the repo → github.com/synapsevibe-labs/agentstack
+Star the repo → github.com/arqon-agentics/agentstack
 
 ---
 

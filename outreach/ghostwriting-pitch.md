@@ -2,7 +2,7 @@
 
 Hi [Editor Name],
 
-I'm reaching out from SynapseVibe Labs, a collective of platform engineers building production-grade agentic systems. We've been following [Publication Name] and think our expertise would be a great fit for your audience.
+I'm reaching out from ArQon Agentics, a collective of platform engineers building production-grade agentic systems. We've been following [Publication Name] and think our expertise would be a great fit for your audience.
 
 We've recently published deep-dives on:
 - Multi-agent orchestration patterns (10K+ views)
@@ -26,8 +26,8 @@ Let me know if any of these resonate, or suggest a topic you'd like covered.
 
 Best,
 [Name]
-SynapseVibe Labs
-https://synapsevibe.com
+ArQon Agentics
+https://arqonagentics.com
 
 ---
 

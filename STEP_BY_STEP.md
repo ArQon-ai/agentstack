@@ -1,4 +1,4 @@
-# SynapseVibe Labs — STEP BY STEP LAUNCH GUIDE
+# ArQon Agentics — STEP BY STEP LAUNCH GUIDE
 ## Zero-Thinking Required. Just Follow The Steps.
 
 ---
@@ -14,7 +14,7 @@ If you want to launch TODAY with zero spending, use this path:
 2. Create personal account (if you don't have one)
 3. Go to https://github.com/organizations/plan
 4. Click "Create a free organization"
-5. Organization name: `synapsevibe-labs`
+5. Organization name: `arqon-agentics`
 6. Contact email: your email
 7. Complete setup
 
@@ -26,14 +26,14 @@ If you want to launch TODAY with zero spending, use this path:
 **Twitter/X:**
 1. Go to https://twitter.com/i/flow/signup
 2. Use email (not phone if you want anonymity)
-3. Username: `synapsevibe`
+3. Username: `arqonagentics`
 4. Done
 
 **Substack:**
 1. Go to https://substack.com/signup
 2. Sign up with email
 3. Publication name: "The SynapseVibe Dispatch"
-4. Subdomain: `synapsevibe`
+4. Subdomain: `arqonagentics`
 5. Done
 
 ### Step 2: Push Code to GitHub (2 minutes)
@@ -42,7 +42,7 @@ Run these exact commands in your terminal:
 
 ```bash
 cd /root/.openclaw/workspace/projects/agentic-cashflow/open-source/agentstack
-git remote add origin https://github.com/synapsevibe-labs/agentstack.git
+git remote add origin https://github.com/arqon-agentics/agentstack.git
 git branch -M main
 git push -u origin main
 ```
@@ -58,10 +58,10 @@ vercel
 When prompted:
 - Set up and deploy? **Y**
 - Link to existing project? **N**
-- Project name: `synapsevibe-website`
+- Project name: `arqon-website`
 - Directory: `./` (press Enter)
 
-Vercel will give you a URL like `synapsevibe-website.vercel.app`
+Vercel will give you a URL like `arqon-website.vercel.app`
 
 ### Step 4: Set Up Substack (5 minutes)
 
@@ -88,8 +88,8 @@ After you're live on the free domain, add your custom domain:
 
 ### Buy Domain:
 1. Go to https://namecheap.com (or Cloudflare)
-2. Search: `synapsevibe.com`
-3. If taken, try: `synapsevibe.io`, `synapsevibe.dev`, `synapsevibetech.com`
+2. Search: `arqonagentics.com`
+3. If taken, try: `arqonagentics.io`, `arqonagentics.dev`, `arqonagenticstech.com`
 4. Add to cart, checkout
 5. In Vercel dashboard:
    - Go to your project
@@ -177,25 +177,25 @@ If you want more automation:
 ## 📱 SOCIAL MEDIA SETUP
 
 ### Twitter/X Profile:
-- **Name:** SynapseVibe Labs
-- **Handle:** @synapsevibe
+- **Name:** ArQon Agentics
+- **Handle:** @arqonagentics
 - **Bio:** Copy from `ready-to-post/twitter-bio.txt`
-- **Website:** synapsevibe.com (or Vercel URL)
+- **Website:** arqonagentics.com (or Vercel URL)
 - **Header:** Create simple branded image (dark theme, logo text)
 - **Avatar:** Abstract geometric logo or neural network icon
 
 ### LinkedIn Company:
 1. Go to https://linkedin.com/company/new
-2. Company name: SynapseVibe Labs
+2. Company name: ArQon Agentics
 3. Website: your URL
 4. Industry: Software Development
 5. Size: 1-10 employees
 6. Description: Copy from `ready-to-post/linkedin-about.txt`
 
 ### GitHub Org:
-- **Name:** synapsevibe-labs
+- **Name:** arqon-agentics
 - **Description:** Building production-grade agentic systems
-- **Website:** synapsevibe.com
+- **Website:** arqonagentics.com
 - **Repositories:** agentstack (public)
 
 ---
@@ -236,7 +236,7 @@ python -m examples.quickstart
 ### Google Analytics (free):
 1. Go to https://analytics.google.com
 2. Create account
-3. Add property: synapsevibe.com
+3. Add property: arqonagentics.com
 4. Get tracking ID
 5. Add to website `<head>`:
 ```html
@@ -266,7 +266,7 @@ Built-in. Track impressions, engagement, followers.
 ### "GitHub push fails":
 ```bash
 git remote -v  # Check remote URL
-git remote set-url origin https://github.com/synapsevibe-labs/agentstack.git
+git remote set-url origin https://github.com/arqon-agentics/agentstack.git
 git push -u origin main
 ```
 
@@ -283,10 +283,10 @@ vercel --prod
 - Use Vercel's free SSL (automatic)
 
 ### "Twitter username taken":
-Try: @synapsevibe_labs, @sv_labs, @synapsevibetech, @buildwithsynapse
+Try: @arqonagentics_labs, @sv_labs, @arqonagenticstech, @buildwitharqon
 
 ### "Substack name taken":
-Try: synapsevibe-tech, synapsevibe-labs, the-synapsevibe-dispatch
+Try: arqon-tech, arqon-agentics, the-arqon-dispatch
 
 ---
 

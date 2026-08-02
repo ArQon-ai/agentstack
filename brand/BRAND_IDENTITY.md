@@ -1,8 +1,8 @@
-# SynapseVibe Labs — Brand Identity
+# ArQon Agentics — Brand Identity
 
 ## Core Identity
 
-**Name:** SynapseVibe Labs  
+**Name:** ArQon Agentics  
 **Short Name:** SVL  
 **Tagline:** Where agentic infrastructure meets creative velocity.  
 **Alt Taglines:**
@@ -87,21 +87,21 @@
 
 ## Social Presence
 
-**Twitter/X:** @synapsevibe — Hot takes, quick tips, project updates
-**GitHub:** synapsevibe-labs — Open source projects
+**Twitter/X:** @arqonagentics — Hot takes, quick tips, project updates
+**GitHub:** arqon-agentics — Open source projects
 **Substack:** The SynapseVibe Dispatch — Weekly deep-dives
-**Website:** synapsevibe.com — Landing page, blog, products
-**LinkedIn:** SynapseVibe Labs — Company page for credibility
+**Website:** arqonagentics.com — Landing page, blog, products
+**LinkedIn:** ArQon Agentics — Company page for credibility
 
 ## Email Signatures
 
 ```
 —
-SynapseVibe Labs
+ArQon Agentics
 Where agentic infrastructure meets creative velocity.
-synapsevibe.com | @synapsevibe
+arqonagentics.com | @arqonagentics
 ```
 
 ## One-Liner Pitch
 
-"SynapseVibe Labs builds production-grade agentic systems and teaches others how to do the same — at the speed of vibe coding."
+"ArQon Agentics builds production-grade agentic systems and teaches others how to do the same — at the speed of vibe coding."

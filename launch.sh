@@ -1,11 +1,11 @@
 #!/bin/bash
-# SynapseVibe Labs — LAUNCH AUTOMATION SCRIPT
+# ArQon Agentics — LAUNCH AUTOMATION SCRIPT
 # Run this to prepare everything for deployment
 
 set -e
 
 echo "=========================================="
-echo "  SynapseVibe Labs — Launch Prep"
+echo "  ArQon Agentics — Launch Prep"
 echo "=========================================="
 echo ""
 
@@ -87,7 +87,7 @@ echo "✅ Files staged"
 
 # Step 4: Initial commit
 echo "🔄 Step 4: Creating initial commit..."
-git commit -m "🚀 Initial commit: SynapseVibe Labs foundation
+git commit -m "🚀 Initial commit: ArQon Agentics foundation
 
 - Brand identity and website
 - AgentStack open-source project
@@ -107,13 +107,13 @@ echo "=========================================="
 echo ""
 echo "1. Create GitHub repository:"
 echo "   → Go to https://github.com/new"
-echo "   → Owner: synapsevibe-labs (create org first)"
+echo "   → Owner: arqon-agentics (create org first)"
 echo "   → Repo name: agentstack"
 echo "   → Visibility: Public"
 echo "   → DO NOT initialize with README"
 echo ""
 echo "2. Then run these commands:"
-echo "   git remote add origin https://github.com/synapsevibe-labs/agentstack.git"
+echo "   git remote add origin https://github.com/arqon-agentics/agentstack.git"
 echo "   git branch -M main"
 echo "   git push -u origin main"
 echo ""
@@ -124,7 +124,7 @@ mkdir -p website
 cat > website/vercel.json << 'EOF'
 {
   "version": 2,
-  "name": "synapsevibe-website",
+  "name": "arqon-website",
   "routes": [
     {
       "src": "/(.*)",
@@ -141,7 +141,7 @@ cat > deploy.sh << 'EOF'
 #!/bin/bash
 # Quick deploy script
 
-echo "Deploying SynapseVibe Labs..."
+echo "Deploying ArQon Agentics..."
 
 # Deploy website
 echo "Deploying website to Vercel..."
@@ -160,14 +160,14 @@ mkdir -p ready-to-post
 
 # Twitter bio
 cat > ready-to-post/twitter-bio.txt << 'EOF'
-SynapseVibe Labs
-@synapsevibe
+ArQon Agentics
+@arqonagentics
 
 Building production-grade agentic systems at the speed of vibe coding.
 
-⚡ AgentStack → github.com/synapsevibe-labs/agentstack
-📧 Newsletter → synapsevibe.substack.com
-🌐 Website → synapsevibe.com
+⚡ AgentStack → github.com/arqon-agentics/agentstack
+📧 Newsletter → arqonagentics.substack.com
+🌐 Website → arqonagentics.com
 
 Where agentic infrastructure meets creative velocity.
 EOF
@@ -178,7 +178,7 @@ cat > ready-to-post/substack-about.md << 'EOF'
 
 The SynapseVibe Dispatch is a weekly newsletter about agentic engineering, vibe coding, and the infrastructure that makes AI agents work in production.
 
-Written by SynapseVibe Labs — a collective of platform engineers and vibe coders building the future of agentic software.
+Written by ArQon Agentics — a collective of platform engineers and vibe coders building the future of agentic software.
 
 ## What We Cover
 
@@ -195,20 +195,20 @@ Written by SynapseVibe Labs — a collective of platform engineers and vibe code
 - Exclusive content not published elsewhere
 - Direct replies to every email
 
-## About SynapseVibe Labs
+## About ArQon Agentics
 
 We build production-grade agentic systems and teach others how to do the same — at the speed of vibe coding.
 
-- 🌐 Website: https://synapsevibe.com
-- 🐦 Twitter: https://twitter.com/synapsevibe
-- 🐙 GitHub: https://github.com/synapsevibe-labs
+- 🌐 Website: https://arqonagentics.com
+- 🐦 Twitter: https://twitter.com/arqonagentics
+- 🐙 GitHub: https://github.com/arqon-agentics
 
 Built with ⚡ and way too much caffeine.
 EOF
 
 # LinkedIn company description
 cat > ready-to-post/linkedin-about.txt << 'EOF'
-SynapseVibe Labs is a collective of platform engineers and vibe coders building production-grade agentic systems.
+ArQon Agentics is a collective of platform engineers and vibe coders building production-grade agentic systems.
 
 We specialize in:
 ⚡ Agentic Platform Engineering
@@ -220,9 +220,9 @@ We specialize in:
 
 Our mission: Build the infrastructure for the agentic future — and teach others how to do the same.
 
-Website: https://synapsevibe.com
-GitHub: https://github.com/synapsevibe-labs
-Newsletter: https://synapsevibe.substack.com
+Website: https://arqonagentics.com
+GitHub: https://github.com/arqon-agentics
+Newsletter: https://arqonagentics.substack.com
 
 Where agentic infrastructure meets creative velocity.
 EOF
@@ -290,9 +290,9 @@ From first prototype to production deployment, this playbook covers everything y
 
 ## About the Authors
 
-SynapseVibe Labs is a collective of platform engineers and vibe coders who have deployed production agentic systems for the past year. We've made the mistakes so you don't have to.
+ArQon Agentics is a collective of platform engineers and vibe coders who have deployed production agentic systems for the past year. We've made the mistakes so you don't have to.
 
-Website: https://synapsevibe.com
+Website: https://arqonagentics.com
 EOF
 
 echo "✅ Social media content prepared"
@@ -310,7 +310,7 @@ Built by vibe coders, for vibe coders.
 
 Open source. MIT licensed. Ready to use.
 
-⭐ github.com/synapsevibe-labs/agentstack
+⭐ github.com/arqon-agentics/agentstack
 
 #AI #AgenticEngineering #OpenSource
 EOF
