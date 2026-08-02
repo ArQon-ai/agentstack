@@ -15,7 +15,7 @@ ArQon Agentics
 Building production-grade agentic systems at the speed of vibe coding.
 
 ⚡ AgentStack → github.com/ArQon-ai/agentstack
-📧 Newsletter → arqonai.substack.com
+📧 Newsletter → substack.com/@arqonai1
 🌐 Website → arqonagentics.com
 
 Where agentic infrastructure meets creative velocity.

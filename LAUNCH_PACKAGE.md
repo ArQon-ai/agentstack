@@ -80,7 +80,7 @@
 ### Step 3: Create Social Accounts (10 min, FREE)
 - **Twitter/X:** @ArQon_ai86
 - **LinkedIn:** Company page "ArQon Agentics"
-- **Substack:** arqonai.substack.com
+- **Substack:** substack.com/@arqonai1
 - Use the brand colors (void black #0A0A0F, indigo #6366F1, cyan #22D3EE)
 
 ### Step 4: Create Gumroad Account (5 min, FREE)

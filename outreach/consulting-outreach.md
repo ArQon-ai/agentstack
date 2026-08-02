@@ -27,4 +27,4 @@ Best,
 ArQon Agentics
 https://arqonagentics.com
 
-P.S. — We also publish weekly deep-dives on agentic engineering at [The Dispatch](https://arqonai.substack.com). Worth a read if this space interests you.
+P.S. — We also publish weekly deep-dives on agentic engineering at [The Dispatch](https://substack.com/@arqonai1). Worth a read if this space interests you.

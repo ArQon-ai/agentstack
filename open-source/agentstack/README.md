@@ -186,7 +186,7 @@ AgentStack is built by [ArQon Agentics](https://arqonagentics.com), a collective
 
 - 🌐 [Website](https://arqonagentics.com)
 - 🐦 [Twitter](https://twitter.com/ArQon_ai86)
-- 📧 [Newsletter](https://arqonai.substack.com)
+- 📧 [Newsletter](https://substack.com/@arqonai1)
 
 ---
 

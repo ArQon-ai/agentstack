@@ -188,4 +188,4 @@ The vibe coding landscape changes weekly. Here's what we're watching:
 
 ---
 
-*ArQon Agentics builds production-grade agentic systems. Follow us on [Twitter](https://twitter.com/ArQon_ai86) or subscribe to [The Dispatch](https://arqonai.substack.com) for weekly updates.*
+*ArQon Agentics builds production-grade agentic systems. Follow us on [Twitter](https://twitter.com/ArQon_ai86) or subscribe to [The Dispatch](https://substack.com/@arqonai1) for weekly updates.*
