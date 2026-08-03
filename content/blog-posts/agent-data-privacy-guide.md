@@ -1,100 +1,91 @@
 # Blog Post: The Agent Engineer's Guide to Data Privacy
-## Published: December 4, 2026
+## Published: January 29, 2027
 ## Category: Engineering
 
 ---
 
 # The Agent Engineer's Guide to Data Privacy
 
-*Protect user data. Build trust.*
+*Protect data. Build trust.*
 
 ---
 
-## Privacy Principles
+## Why Data Privacy?
+
+### Reasons
+
+- Legal compliance
+- Customer trust
+- Security
+- Reputation
+
+---
+
+## Implementation
 
 ### 1. Data Minimization
 
 ```python
-class PrivacyFirstAgent:
-    def process(self, query: str, user_id: str) -> str:
-        # Only collect what's needed
-        context = self.get_minimal_context(user_id)
-        
-        # Process
-        response = self.llm.generate(query, context)
-        
-        # Don't store query
-        self.log_anonymized(query)
-        
-        return response
-```
-
-### 2. Encryption
-
-```python
-class EncryptedStorage:
-    def store(self, user_id: str, data: str):
-        encrypted = self.encrypt(data)
-        self.db.store(user_id, encrypted)
+class PrivacyByDesign:
+    def collect_only_necessary(self, user_data: dict) -> dict:
+        necessary_fields = ['email', 'name']
+        return {k: v for k, v in user_data.items() if k in necessary_fields}
     
-    def retrieve(self, user_id: str) -> str:
-        encrypted = self.db.get(user_id)
-        return self.decrypt(encrypted)
-```
-
----
-
-## Compliance
-
-### GDPR
-
-```python
-class GDPRCompliant:
-    def delete_user(self, user_id: str):
-        # Delete all data
-        self.db.delete(user_id)
-        self.cache.delete(user_id)
-        self.analytics.delete(user_id)
-        
-        # Log deletion
-        self.audit_log.log("user_deleted", user_id)
-    
-    def export_data(self, user_id: str) -> dict:
+    def anonymize(self, data: dict) -> dict:
+        """Remove PII for analytics"""
         return {
-            "profile": self.db.get(user_id),
-            "conversations": self.get_conversations(user_id),
-            "analytics": self.get_analytics(user_id)
+            'user_id_hash': hash(data['user_id']),
+            'usage_pattern': data['usage_pattern'],
+            'timestamp': data['timestamp']
         }
+```
+
+### 2. Data Retention
+
+```python
+class DataRetentionPolicy:
+    async def enforce(self):
+        # Delete conversations older than 30 days
+        await self.db.execute(
+            "DELETE FROM conversations WHERE created_at < NOW() - INTERVAL '30 days'"
+        )
+        
+        # Anonymize users inactive for 1 year
+        await self.db.execute(
+            """UPDATE users 
+               SET email = NULL, name = 'Anonymous' 
+               WHERE last_active < NOW() - INTERVAL '1 year'"""
+        )
 ```
 
 ---
 
 ## The Privacy Checklist
 
-- [ ] Minimize data collection
-- [ ] Encrypt at rest
-- [ ] Encrypt in transit
-- [ ] Anonymize logs
-- [ ] Support deletion
-- [ ] Support export
-- [ ] Regular audits
-- [ ] Access controls
-- [ ] Data retention policy
-- [ ] Privacy policy
+- [ ] Data minimization
+- [ ] Purpose limitation
+- [ ] Storage limitation
+- [ ] Accuracy
+- [ ] Integrity
+- [ ] Confidentiality
+- [ ] Accountability
+- [ ] User rights
+- [ ] Consent
+- [ ] Documentation
 
 ---
 
 ## Conclusion
 
-Privacy:
-- Is a feature
+Data privacy:
+- Is required
 - Builds trust
-- Reduces risk
 - Requires design
+- Needs enforcement
 
-Protect data.
-Respect users.
-Build trust.
+Collect less.
+Protect more.
+Delete on time.
 
 ---
 
