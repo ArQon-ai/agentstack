@@ -1,86 +1,98 @@
-# SEO Article: AI Agent Data Pipeline: ETL for LLM Systems
-**Target Keywords:** agent data pipeline, LLM ETL, data processing  
-**Published:** December 27, 2026
+# SEO Article: AI Agent Data Pipeline: ETL and Streaming
+**Target Keywords:** agent data pipeline, ETL, streaming, LLM data processing  
+**Published:** February 11, 2027
 
 ---
 
-# AI Agent Data Pipeline: ETL for LLM Systems
+# AI Agent Data Pipeline: ETL and Streaming
 
-*Process data for agents.*
-
----
-
-## Pipeline Components
-
-### 1. Extract
-
-```python
-class DataExtractor:
-    async def extract(self, sources: list[Source]) -> list[Document]:
-        documents = []
-        
-        for source in sources:
-            if source.type == "web":
-                docs = await self.scrape(source.url)
-            elif source.type == "file":
-                docs = await self.read_file(source.path)
-            elif source.type == "api":
-                docs = await self.call_api(source.endpoint)
-            
-            documents.extend(docs)
-        
-        return documents
-```
-
-### 2. Transform
-
-```python
-class DataTransformer:
-    async def transform(self, documents: list[Document]) -> list[Document]:
-        transformed = []
-        
-        for doc in documents:
-            # Clean
-            doc.content = self.clean(doc.content)
-            
-            # Chunk
-            chunks = self.chunk(doc.content, size=500)
-            
-            # Embed
-            for chunk in chunks:
-                chunk.embedding = await self.embed(chunk.content)
-                transformed.append(chunk)
-        
-        return transformed
-```
-
-### 3. Load
-
-```python
-class DataLoader:
-    async def load(self, documents: list[Document]):
-        for doc in documents:
-            await self.vector_db.upsert(
-                id=doc.id,
-                vector=doc.embedding,
-                metadata=doc.metadata
-            )
-```
+*Process data. Feed agents.*
 
 ---
 
-## The ETL Checklist
+## Why Data Pipelines?
+
+### Benefits
+
+- Data quality
+- Real-time processing
+- Scalability
+- Consistency
+
+---
+
+## Implementation
+
+### 1. Batch ETL
+
+```python
+from prefect import flow, task
+
+@task
+def extract_conversations():
+    return db.query("SELECT * FROM conversations WHERE processed = false")
+
+@task
+def transform_conversations(raw_data):
+    return [
+        {
+            "id": row.id,
+            "embedding": embed(row.content),
+            "metadata": extract_metadata(row)
+        }
+        for row in raw_data
+    ]
+
+@task
+def load_to_vector_db(transformed_data):
+    for item in transformed_data:
+        vector_db.upsert(item)
+
+@flow
+def conversation_etl():
+    raw = extract_conversations()
+    transformed = transform_conversations(raw)
+    load_to_vector_db(transformed)
+```
+
+### 2. Streaming
+
+```python
+from kafka import KafkaConsumer
+import asyncio
+
+class StreamingProcessor:
+    def __init__(self):
+        self.consumer = KafkaConsumer(
+            'agent-events',
+            bootstrap_servers=['localhost:9092']
+        )
+    
+    async def process_stream(self):
+        for message in self.consumer:
+            event = json.loads(message.value)
+            
+            if event['type'] == 'conversation.created':
+                await self.process_conversation(event['data'])
+            
+            elif event['type'] == 'agent.updated':
+                await self.update_agent_index(event['data'])
+```
+
+---
+
+## The Data Pipeline Checklist
 
 - [ ] Data sources
-- [ ] Extraction
-- [ ] Cleaning
-- [ ] Chunking
-- [ ] Embedding
-- [ ] Loading
-- [ ] Validation
+- [ ] Extract logic
+- [ ] Transform rules
+- [ ] Load destination
 - [ ] Scheduling
 - [ ] Monitoring
 - [ ] Error handling
+- [ ] Data quality
+- [ ] Schema evolution
+- [ ] Documentation
 
 ---
 
@@ -88,14 +100,13 @@ class DataLoader:
 
 Data pipelines:
 - Feed agents
+- Ensure quality
+- Enable real-time
 - Require design
-- Need monitoring
-- Enable scale
 
-Extract.
-Transform.
-Load.
-Repeat.
+Extract clean.
+Transform smart.
+Load fast.
 
 ---
 
