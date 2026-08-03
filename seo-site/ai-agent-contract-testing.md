@@ -1,12 +1,12 @@
 # SEO Article: AI Agent Testing: Contract Testing
-**Target Keywords:** agent contract testing, API contract, LLM integration testing  
-**Published:** February 1, 2027
+**Target Keywords:** agent contract testing, Pact testing, API contract validation  
+**Published:** March 5, 2027
 
 ---
 
 # AI Agent Testing: Contract Testing
 
-*Verify contracts. Prevent breakage.*
+*Define contracts. Verify compliance.*
 
 ---
 
@@ -15,8 +15,8 @@
 ### Benefits
 
 - API compatibility
-- Independent testing
-- Early detection
+- Independent deploys
+- Faster feedback
 - Consumer-driven
 
 ---
@@ -27,40 +27,67 @@
 
 ```python
 from pact import Consumer, Provider
+import pytest
 
-# Consumer test
-pact = Consumer('agent-client').has_pact_with(Provider('agent-api'))
+@pytest.fixture
+def pact():
+    return Consumer('agent-client').has_pact_with(Provider('agent-api'))
 
-(pact
- .given('agent exists')
- .upon_receiving('a request for agent run')
- .with_request('POST', '/agents/123/run', body={'query': 'hello'})
- .will_respond_with(200, body={
-     'response': 'Hello!',
-     'tokens_used': 10,
-     'latency_ms': 500
- }))
-
-def test_run_agent():
+def test_get_agent(pact):
+    expected = {
+        "id": "agent-123",
+        "name": "Support Bot",
+        "status": "active",
+        "model": "gpt-4o",
+        "created_at": "2027-01-01T00:00:00Z"
+    }
+    
+    (pact
+     .given('agent exists')
+     .upon_receiving('a request for an agent')
+     .with_request('GET', '/v1/agents/agent-123')
+     .will_respond_with(200, body=expected))
+    
     with pact:
-        result = agent_client.run('123', 'hello')
-        assert result.response == 'Hello!'
+        result = client.get_agent("agent-123")
+        assert result.name == "Support Bot"
+
+def test_create_conversation(pact):
+    (pact
+     .given('agent exists')
+     .upon_receiving('a request to create conversation')
+     .with_request('POST', '/v1/agents/agent-123/conversations', body={
+         "user_id": "user-456"
+     })
+     .will_respond_with(201, body={
+         "id": "conv-789",
+         "agent_id": "agent-123",
+         "user_id": "user-456",
+         "status": "active"
+     }))
+    
+    with pact:
+        result = client.create_conversation("agent-123", "user-456")
+        assert result.status == "active"
 ```
 
 ### 2. Provider Verification
 
 ```python
-class AgentProviderTest:
-    def test_provider(self):
-        verifier = Verifier(
-            provider='agent-api',
-            provider_base_url='http://localhost:8000'
-        )
-        
-        verifier.verify_pacts(
-            'path/to/pacts',
-            provider_states_setup_url='http://localhost:8000/_pact/setup'
-        )
+from pact.verifier import Verifier
+
+def test_provider():
+    verifier = Verifier(
+        provider='agent-api',
+        provider_base_url='http://localhost:8000'
+    )
+    
+    output, _ = verifier.verify_pacts(
+        './pacts/agent-client-agent-api.json',
+        provider_states_setup_url='http://localhost:8000/_pact/setup'
+    )
+    
+    assert output == 0
 ```
 
 ---
@@ -68,29 +95,29 @@ class AgentProviderTest:
 ## The Contract Testing Checklist
 
 - [ ] Consumer tests
-- [ ] Provider tests
+- [ ] Provider verification
 - [ ] Pact broker
 - [ ] CI integration
 - [ ] Versioning
 - [ ] Breaking changes
 - [ ] Documentation
-- [ ] Team workflow
+- [ ] Team agreement
 - [ ] Monitoring
-- [ ] Reporting
+- [ ] Automation
 
 ---
 
 ## Conclusion
 
 Contract testing:
-- Prevents breakage
+- Ensures compatibility
 - Enables independence
-- Requires setup
-- Needs discipline
+- Requires discipline
+- Needs tooling
 
-Test contracts.
-Verify compatibility.
-Ship confidently.
+Define contracts.
+Verify compliance.
+Deploy confidently.
 
 ---
 
