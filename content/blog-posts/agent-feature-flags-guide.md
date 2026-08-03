@@ -1,5 +1,5 @@
 # Blog Post: The Agent Engineer's Guide to Feature Flags
-## Published: December 30, 2026
+## Published: January 15, 2027
 ## Category: Engineering
 
 ---
@@ -14,89 +14,86 @@
 
 ### Benefits
 
-- Gradual rollouts
+- Gradual rollout
 - A/B testing
 - Kill switches
-- Trunk-based development
+- Branchless deployment
 
 ---
 
 ## Implementation
 
-### 1. Simple Feature Flag
+### 1. LaunchDarkly
 
 ```python
-class FeatureFlag:
-    def __init__(self, name: str, enabled: bool = False):
-        self.name = name
-        self.enabled = enabled
+from ldclient import LDClient
+
+ld_client = LDClient(sdk_key="your-key")
+
+class AgentWithFlags:
+    def __init__(self, user_id: str):
+        self.user_id = user_id
     
-    def is_enabled(self, user: User = None) -> bool:
-        if self.enabled:
-            return True
-        
-        if user and user.id in self.beta_users:
-            return True
-        
-        return False
-```
-
-### 2. Percentage Rollout
-
-```python
-class PercentageFlag:
-    def __init__(self, name: str, percentage: int = 0):
-        self.name = name
-        self.percentage = percentage
-    
-    def is_enabled(self, user: User) -> bool:
-        hash_val = int(hashlib.md5(user.id.encode()).hexdigest(), 16)
-        return (hash_val % 100) < self.percentage
-```
-
-### 3. Agent Integration
-
-```python
-class FeatureFlagAgent:
-    def __init__(self, flag_service):
-        self.flags = flag_service
-    
-    async def run(self, query: str, user: User) -> str:
-        if self.flags.is_enabled("new_model", user):
-            return await self.new_model.generate(query)
+    async def run(self, query: str) -> str:
+        # Check feature flag
+        if ld_client.variation("new-prompt-engine", self.user_id, False):
+            return await self.new_engine.run(query)
         else:
-            return await self.old_model.generate(query)
+            return await self.legacy_engine.run(query)
+```
+
+### 2. Custom Implementation
+
+```python
+class FeatureFlagManager:
+    def __init__(self, redis_client):
+        self.redis = redis_client
+    
+    async def is_enabled(self, flag: str, user_id: str) -> bool:
+        # Check global flag
+        global_enabled = await self.redis.get(f"flag:{flag}")
+        if not global_enabled:
+            return False
+        
+        # Check user-specific
+        user_enabled = await self.redis.sismember(f"flag:{flag}:users", user_id)
+        
+        # Check percentage rollout
+        percentage = int(await self.redis.get(f"flag:{flag}:percentage") or 0)
+        user_bucket = hash(user_id) % 100
+        
+        return user_enabled or user_bucket < percentage
 ```
 
 ---
 
-## The Feature Flag Checklist
+## The Feature Flags Checklist
 
 - [ ] Flag management
-- [ ] Percentage rollout
-- [ ] User targeting
+- [ ] Gradual rollout
 - [ ] A/B testing
-- [ ] Kill switch
-- [ ] Monitoring
+- [ ] Kill switches
+- [ ] User targeting
+- [ ] Analytics
 - [ ] Cleanup
 - [ ] Documentation
 - [ ] Testing
-- [ ] Security
+- [ ] Monitoring
 
 ---
 
 ## Conclusion
 
 Feature flags:
-- Enable safe deployment
+- Enable gradual rollouts
 - Support experimentation
+- Provide safety
 - Require management
-- Need cleanup
 
-Flag everything.
-Roll out slowly.
-Kill quickly.
+Flag features.
+Test safely.
+Ship confidently.
 
 ---
 
-*ArQon Agentics flags features. Get the framework at [github.com/ArQon-ai/agentstack](https://github.com/ArQon-ai/agentstack).*
+*ArQon Agentics uses feature flags. Get the framework at [github.com/ArQon-ai/agentstack](https://github.com/ArQon-ai/agentstack).*
