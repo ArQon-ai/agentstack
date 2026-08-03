@@ -1,12 +1,12 @@
 # Blog Post: The Agent Engineer's Guide to Feature Flags
-## Published: December 10, 2026
+## Published: December 30, 2026
 ## Category: Engineering
 
 ---
 
 # The Agent Engineer's Guide to Feature Flags
 
-*Ship safely. Test in production.*
+*Ship without fear.*
 
 ---
 
@@ -14,69 +14,74 @@
 
 ### Benefits
 
-- Deploy without releasing
-- Test with real users
-- Rollback instantly
-- Segment features
+- Gradual rollouts
+- A/B testing
+- Kill switches
+- Trunk-based development
 
 ---
 
 ## Implementation
 
-### Simple Feature Flag
+### 1. Simple Feature Flag
 
 ```python
-class FeatureFlags:
-    def __init__(self, config: dict):
-        self.config = config
+class FeatureFlag:
+    def __init__(self, name: str, enabled: bool = False):
+        self.name = name
+        self.enabled = enabled
     
-    def is_enabled(self, flag: str, user: User = None) -> bool:
-        flag_config = self.config.get(flag, {})
+    def is_enabled(self, user: User = None) -> bool:
+        if self.enabled:
+            return True
         
-        # Global enable
-        if not flag_config.get("enabled", False):
-            return False
+        if user and user.id in self.beta_users:
+            return True
         
-        # User percentage
-        if user and "rollout" in flag_config:
-            return self.in_rollout(user.id, flag_config["rollout"])
-        
-        return True
-    
-    def in_rollout(self, user_id: str, percentage: int) -> bool:
-        hash_val = int(hashlib.md5(user_id.encode()).hexdigest(), 16)
-        return (hash_val % 100) < percentage
+        return False
 ```
 
-### Agent Integration
+### 2. Percentage Rollout
+
+```python
+class PercentageFlag:
+    def __init__(self, name: str, percentage: int = 0):
+        self.name = name
+        self.percentage = percentage
+    
+    def is_enabled(self, user: User) -> bool:
+        hash_val = int(hashlib.md5(user.id.encode()).hexdigest(), 16)
+        return (hash_val % 100) < self.percentage
+```
+
+### 3. Agent Integration
 
 ```python
 class FeatureFlagAgent:
-    def __init__(self, flags: FeatureFlags):
-        self.flags = flags
+    def __init__(self, flag_service):
+        self.flags = flag_service
     
     async def run(self, query: str, user: User) -> str:
-        # Check if new model is enabled
         if self.flags.is_enabled("new_model", user):
-            model = self.new_model
+            return await self.new_model.generate(query)
         else:
-            model = self.default_model
-        
-        return await model.generate(query)
+            return await self.old_model.generate(query)
 ```
 
 ---
 
 ## The Feature Flag Checklist
 
-- [ ] Flag configuration
-- [ ] User targeting
+- [ ] Flag management
 - [ ] Percentage rollout
+- [ ] User targeting
 - [ ] A/B testing
-- [ ] Monitoring
 - [ ] Kill switch
+- [ ] Monitoring
+- [ ] Cleanup
 - [ ] Documentation
-- [ ] Cleanup plan
+- [ ] Testing
+- [ ] Security
 
 ---
 
@@ -85,13 +90,13 @@ class FeatureFlagAgent:
 Feature flags:
 - Enable safe deployment
 - Support experimentation
-- Reduce risk
 - Require management
+- Need cleanup
 
 Flag everything.
-Monitor always.
-Clean up old flags.
+Roll out slowly.
+Kill quickly.
 
 ---
 
-*ArQon Agentics uses feature flags. Get the framework at [github.com/ArQon-ai/agentstack](https://github.com/ArQon-ai/agentstack).*
+*ArQon Agentics flags features. Get the framework at [github.com/ArQon-ai/agentstack](https://github.com/ArQon-ai/agentstack).*
