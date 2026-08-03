@@ -1,241 +1,162 @@
-# SEO Article: AI Agent Monitoring: Metrics That Matter in Production
-**Target Keywords:** agent monitoring, LLM observability, agent metrics  
-**Published:** October 7, 2026
+# SEO Article: AI Agent Monitoring: Tools and Best Practices
+**Target Keywords:** agent monitoring, LLM monitoring, agent observability  
+**Published:** October 30, 2026
 
 ---
 
-# AI Agent Monitoring: Metrics That Matter in Production
+# AI Agent Monitoring: Tools and Best Practices
 
-Build visibility before you need it.
+*You can't improve what you don't measure.*
 
 ---
 
-## The Three Pillars
+## Key Metrics
 
-### 1. Business Metrics
-
-Measure value delivered:
+### Performance Metrics
 
 | Metric | Description | Target |
 |--------|-------------|--------|
-| Requests/min | Throughput | Baseline + growth |
-| Active Users | Engagement | Growing |
-| Task Completion | Success rate | > 90% |
-| User Satisfaction | Rating | > 4.0/5 |
-| Retention | Return rate | > 60% |
+| Latency (p50) | Median response time | < 2s |
+| Latency (p99) | 99th percentile | < 5s |
+| Throughput | Requests per minute | > 100 |
+| Error Rate | Failed requests / Total | < 1% |
+| Uptime | Service availability | > 99.9% |
 
-### 2. Technical Metrics
-
-Measure system health:
-
-| Metric | Description | Alert |
-|--------|-------------|-------|
-| Latency p50 | Median response | > 2s |
-| Latency p95 | 95th percentile | > 5s |
-| Latency p99 | 99th percentile | > 10s |
-| Error Rate | Failed requests | > 5% |
-| Token Usage | Tokens/request | > 2x baseline |
-| Cost/hour | Burn rate | > budget |
-
-### 3. Quality Metrics
-
-Measure output quality:
+### Business Metrics
 
 | Metric | Description | Target |
 |--------|-------------|--------|
-| Response Accuracy | Correct answers | > 85% |
-| Hallucination Rate | False info | < 5% |
-| Context Relevance | Retrieved context | > 80% |
-| User Feedback | Explicit rating | > 4.0 |
-| Escalation Rate | Human handoff | < 10% |
+| Cost per Request | LLM cost / Requests | < $0.05 |
+| Token Efficiency | Output tokens / Input tokens | > 0.5 |
+| User Satisfaction | Positive feedback / Total | > 80% |
+| Task Completion | Completed / Started | > 90% |
+
+### LLM Metrics
+
+| Metric | Description | Target |
+|--------|-------------|--------|
+| Token Usage | Tokens per request | < 2000 |
+| Model Distribution | Usage by model | Track |
+| Prompt Cache Hit | Cached / Total | > 30% |
+| Retry Rate | Retries / Total | < 5% |
 
 ---
 
-## Implementation
+## Monitoring Stack
 
-### Metrics Collection
-
-```python
-from prometheus_client import Counter, Histogram, Gauge
-
-class AgentMetrics:
-    def __init__(self):
-        # Counters
-        self.requests = Counter('agent_requests_total', 'Total requests')
-        self.errors = Counter('agent_errors_total', 'Errors', ['type'])
-        self.tokens = Counter('agent_tokens_total', 'Tokens', ['model', 'type'])
-        
-        # Histograms
-        self.latency = Histogram('agent_latency_seconds', 'Latency')
-        self.tokens_per_request = Histogram('agent_tokens_per_request', 'Tokens per request')
-        
-        # Gauges
-        self.active_users = Gauge('agent_active_users', 'Active users')
-        self.cost_per_hour = Gauge('agent_cost_per_hour', 'Cost per hour')
-```
-
-### Instrumentation
+### Prometheus + Grafana
 
 ```python
-import time
-from functools import wraps
+from prometheus_client import Counter, Histogram, Gauge, Info
 
-def instrumented(func):
-    @wraps(func)
-    async def wrapper(self, *args, **kwargs):
-        start = time.time()
-        
-        try:
-            result = await func(self, *args, **kwargs)
-            
-            # Record success
-            self.metrics.requests.inc()
-            self.metrics.latency.observe(time.time() - start)
-            
-            if hasattr(result, 'tokens'):
-                self.metrics.tokens.labels(model=result.model, type='output').inc(result.tokens)
-            
-            return result
-            
-        except Exception as e:
-            # Record failure
-            self.metrics.errors.labels(type=type(e).__name__).inc()
-            raise
-    
-    return wrapper
+# Request metrics
+requests_total = Counter("agent_requests_total", ["method", "endpoint", "status"])
+request_duration = Histogram("agent_request_duration_seconds", ["endpoint"])
+
+# LLM metrics
+llm_tokens_total = Counter("llm_tokens_total", ["model", "type"])
+llm_cost_total = Counter("llm_cost_total", ["model"])
+llm_latency = Histogram("llm_latency_seconds", ["model"])
+
+# Business metrics
+active_sessions = Gauge("agent_active_sessions")
+queue_size = Gauge("agent_queue_size")
+
+# System metrics
+memory_usage = Gauge("agent_memory_usage_bytes")
+cpu_usage = Gauge("agent_cpu_usage_percent")
 ```
 
-### Dashboard
-
-```python
-# Grafana dashboard configuration
-dashboard = {
-    "title": "Agent Monitoring",
-    "panels": [
-        {
-            "title": "Requests/min",
-            "type": "stat",
-            "targets": [{
-                "expr": "rate(agent_requests_total[1m])"
-            }]
-        },
-        {
-            "title": "Latency p95",
-            "type": "graph",
-            "targets": [{
-                "expr": "histogram_quantile(0.95, rate(agent_latency_seconds_bucket[5m]))"
-            }]
-        },
-        {
-            "title": "Error Rate %",
-            "type": "stat",
-            "targets": [{
-                "expr": "rate(agent_errors_total[5m]) / rate(agent_requests_total[5m]) * 100"
-            }]
-        },
-        {
-            "title": "Cost/hour",
-            "type": "graph",
-            "targets": [{
-                "expr": "rate(agent_cost_total[1h])"
-            }]
-        }
-    ]
-}
-```
-
----
-
-## Alerting
-
-### Critical Alerts
-
-```yaml
-groups:
-  - name: agent_critical
-    rules:
-      - alert: AgentDown
-        expr: up{job="agent"} == 0
-        for: 1m
-        labels:
-          severity: critical
-        annotations:
-          summary: "Agent is down"
-          
-      - alert: HighErrorRate
-        expr: rate(agent_errors_total[5m]) / rate(agent_requests_total[5m]) > 0.05
-        for: 2m
-        labels:
-          severity: critical
-        annotations:
-          summary: "Error rate above 5%"
-```
-
-### Warning Alerts
-
-```yaml
-  - name: agent_warning
-    rules:
-      - alert: HighLatency
-        expr: histogram_quantile(0.95, rate(agent_latency_seconds_bucket[5m])) > 5
-        for: 5m
-        labels:
-          severity: warning
-        annotations:
-          summary: "p95 latency above 5s"
-          
-      - alert: HighCost
-        expr: rate(agent_cost_total[1h]) > 100
-        for: 10m
-        labels:
-          severity: warning
-        annotations:
-          summary: "Cost above $100/hour"
-```
-
----
-
-## Log Analysis
-
-### Structured Logging
+### Logging with Structured Logs
 
 ```python
 import structlog
 
 logger = structlog.get_logger()
 
-async def process_request(self, query):
-    logger.info(
-        "agent_request",
-        user_id=user_id,
-        query=query[:100],  # Truncate for privacy
-        model="gpt-4o",
-        timestamp=datetime.now().isoformat()
-    )
+# Request logging
+logger.info(
+    "agent_request",
+    user_id=user_id,
+    query=query[:100],
+    model=model,
+    tokens_input=tokens_in,
+    tokens_output=tokens_out,
+    cost=cost,
+    latency_ms=latency,
+    status="success"
+)
+
+# Error logging
+logger.error(
+    "agent_error",
+    error_type=type(error).__name__,
+    error_message=str(error),
+    user_id=user_id,
+    query=query[:100],
+    traceback=traceback.format_exc()
+)
+```
+
+---
+
+## Alerting
+
+### Alert Rules
+
+```yaml
+# prometheus/alerts.yml
+groups:
+- name: agent_alerts
+  rules:
+  - alert: HighErrorRate
+    expr: rate(agent_requests_total{status=~"5.."}[5m]) > 0.05
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "High error rate detected"
+      
+  - alert: HighLatency
+    expr: histogram_quantile(0.99, rate(agent_request_duration_seconds_bucket[5m])) > 5
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High latency detected"
+      
+  - alert: HighCost
+    expr: rate(llm_cost_total[1h]) > 10
+    for: 1h
+    labels:
+      severity: warning
+    annotations:
+      summary: "High LLM cost detected"
+```
+
+### On-Call Rotation
+
+```python
+class OnCallManager:
+    def __init__(self, rotation):
+        self.rotation = rotation
+        self.current = 0
     
-    try:
-        response = await self.agent.run(query)
+    def get_on_call(self):
+        return self.rotation[self.current % len(self.rotation)]
+    
+    def rotate(self):
+        self.current += 1
+    
+    async def alert(self, severity, message):
+        on_call = self.get_on_call()
         
-        logger.info(
-            "agent_response",
-            user_id=user_id,
-            latency_ms=int(response.latency * 1000),
-            tokens=response.tokens,
-            cost=response.cost,
-            status="success"
-        )
-        
-        return response
-        
-    except Exception as e:
-        logger.error(
-            "agent_error",
-            user_id=user_id,
-            error_type=type(e).__name__,
-            error_message=str(e),
-            query=query[:100]
-        )
-        raise
+        if severity == "critical":
+            await self.page(on_call, message)
+        elif severity == "warning":
+            await self.slack(on_call, message)
+        else:
+            await self.email(on_call, message)
 ```
 
 ---
@@ -246,29 +167,84 @@ async def process_request(self, query):
 
 ```python
 from opentelemetry import trace
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
 # Setup
-trace.set_tracer_provider(TracerProvider())
-tracer = trace.get_tracer(__name__)
+tracer_provider = TracerProvider()
+otlp_exporter = OTLPSpanExporter(endpoint="otel-collector:4317")
+tracer_provider.add_span_processor(BatchSpanProcessor(otlp_exporter))
+trace.set_tracer_provider(tracer_provider)
+
+tracer = trace.get_tracer("agent")
 
 # Usage
-async def process_request(self, query):
-    with tracer.start_as_current_span("agent_request") as span:
-        span.set_attribute("user_id", user_id)
-        span.set_attribute("query_length", len(query))
+async def process_request(request):
+    with tracer.start_as_current_span("process_request") as span:
+        span.set_attribute("user.id", request.user_id)
+        span.set_attribute("query.length", len(request.query))
         
-        with tracer.start_span("retrieval"):
-            context = await self.retrieve(query)
-            span.set_attribute("context_chunks", len(context))
-        
-        with tracer.start_span("generation"):
-            response = await self.generate(query, context)
-            span.set_attribute("response_length", len(response))
-            span.set_attribute("tokens", response.tokens)
+        # Sub-span for LLM call
+        with tracer.start_as_current_span("llm_call") as llm_span:
+            response = await llm.generate(request.query)
+            llm_span.set_attribute("tokens.used", response.tokens)
+            llm_span.set_attribute("cost", response.cost)
         
         return response
+```
+
+---
+
+## Dashboards
+
+### Grafana Dashboard
+
+```json
+{
+  "dashboard": {
+    "title": "Agent Monitoring",
+    "panels": [
+      {
+        "title": "Request Rate",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(agent_requests_total[5m])",
+            "legendFormat": "{{method}} {{endpoint}}"
+          }
+        ]
+      },
+      {
+        "title": "Latency (p99)",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.99, rate(agent_request_duration_seconds_bucket[5m]))"
+          }
+        ]
+      },
+      {
+        "title": "Error Rate",
+        "type": "singlestat",
+        "targets": [
+          {
+            "expr": "rate(agent_requests_total{status=~\"5..\"}[5m]) / rate(agent_requests_total[5m])"
+          }
+        ]
+      },
+      {
+        "title": "LLM Cost",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(llm_cost_total[1h])"
+          }
+        ]
+      }
+    ]
+  }
+}
 ```
 
 ---
@@ -278,30 +254,28 @@ async def process_request(self, query):
 - [ ] Metrics collection
 - [ ] Structured logging
 - [ ] Distributed tracing
-- [ ] Dashboard creation
-- [ ] Alert configuration
-- [ ] Error tracking
-- [ ] Performance monitoring
-- [ ] Cost tracking
-- [ ] User analytics
-- [ ] Quality metrics
+- [ ] Alerting rules
+- [ ] Dashboards
 - [ ] On-call rotation
-- [ ] Incident response
+- [ ] Runbooks
+- [ ] Post-mortems
+- [ ] SLOs defined
+- [ ] Error budgets
 
 ---
 
 ## Conclusion
 
 Monitoring:
-- Prevents surprises
-- Enables optimization
-- Builds trust
-- Drives improvement
+- Prevents outages
+- Controls costs
+- Improves quality
+- Enables iteration
 
 Instrument everything.
-Alert early.
-Fix fast.
+Alert on symptoms.
+Measure what matters.
 
 ---
 
-*ArQon Agentics builds observable agent systems. Get the open-source framework at [github.com/ArQon-ai/agentstack](https://github.com/ArQon-ai/agentstack).*
+*ArQon Agentics monitors agents in production. Get the framework at [github.com/ArQon-ai/agentstack](https://github.com/ArQon-ai/agentstack).*
