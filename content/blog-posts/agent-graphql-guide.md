@@ -1,12 +1,12 @@
-# Blog Post: The Agent Engineer's Guide to GraphQL APIs
-## Published: December 26, 2026
+# Blog Post: The Agent Engineer's Guide to GraphQL
+## Published: January 19, 2027
 ## Category: Engineering
 
 ---
 
-# The Agent Engineer's Guide to GraphQL APIs
+# The Agent Engineer's Guide to GraphQL
 
-*Query exactly what you need.*
+*Query what you need. Get what you want.*
 
 ---
 
@@ -14,9 +14,9 @@
 
 ### Benefits
 
-- Precise queries
-- Single endpoint
+- Flexible queries
 - Strong typing
+- Single endpoint
 - Real-time subscriptions
 
 ---
@@ -27,21 +27,16 @@
 type Agent {
   id: ID!
   name: String!
-  status: AgentStatus!
-  tools: [Tool!]!
+  model: String!
   conversations: [Conversation!]!
-}
-
-type Tool {
-  id: ID!
-  name: String!
-  description: String!
-  parameters: JSON
+  createdAt: DateTime!
 }
 
 type Conversation {
   id: ID!
+  agent: Agent!
   messages: [Message!]!
+  title: String
   createdAt: DateTime!
 }
 
@@ -49,39 +44,58 @@ type Message {
   id: ID!
   role: MessageRole!
   content: String!
-  timestamp: DateTime!
+  tokensUsed: Int
+  latencyMs: Int
+  createdAt: DateTime!
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
 }
 
 type Query {
   agent(id: ID!): Agent
-  agents(filter: AgentFilter): [Agent!]!
+  agents: [Agent!]!
   conversation(id: ID!): Conversation
 }
 
 type Mutation {
-  createAgent(input: CreateAgentInput!): Agent!
-  sendMessage(conversationId: ID!, content: String!): Message!
+  createAgent(name: String!, model: String): Agent
+  sendMessage(conversationId: ID!, content: String!): Message
 }
 
 type Subscription {
-  agentStatusChanged(agentId: ID!): AgentStatus!
+  messageAdded(conversationId: ID!): Message
 }
 ```
 
 ---
 
-## Resolvers
+## Implementation
 
 ```python
-class AgentResolver:
+from strawberry import type, field, mutation, subscription
+
+@type
+class Query:
+    @field
     async def agent(self, id: str) -> Agent:
-        return await db.get_agent(id)
+        return await Agent.get(id)
     
-    async def agents(self, filter: AgentFilter) -> list[Agent]:
-        return await db.list_agents(filter)
-    
-    async def create_agent(self, input: CreateAgentInput) -> Agent:
-        return await db.create_agent(input)
+    @field
+    async def agents(self) -> list[Agent]:
+        return await Agent.all()
+
+@type
+class Mutation:
+    @mutation
+    async def send_message(self, conversation_id: str, content: str) -> Message:
+        conversation = await Conversation.get(conversation_id)
+        return await conversation.send_message(content)
+
+schema = strawberry.Schema(query=Query, mutation=Mutation)
 ```
 
 ---
@@ -89,15 +103,15 @@ class AgentResolver:
 ## The GraphQL Checklist
 
 - [ ] Schema design
-- [ ] Type definitions
 - [ ] Resolvers
+- [ ] Mutations
+- [ ] Subscriptions
 - [ ] Authentication
 - [ ] Authorization
-- [ ] Error handling
-- [ ] Pagination
-- [ ] Subscriptions
+- [ ] Caching
+- [ ] N+1 prevention
+- [ ] Monitoring
 - [ ] Documentation
-- [ ] Testing
 
 ---
 
@@ -105,13 +119,13 @@ class AgentResolver:
 
 GraphQL:
 - Flexible queries
-- Strong typing
-- Real-time
+- Strong types
+- Real-time support
 - Requires design
 
 Query precisely.
-Type strictly.
-Subscribe instantly.
+Subscribe live.
+Scale smart.
 
 ---
 
