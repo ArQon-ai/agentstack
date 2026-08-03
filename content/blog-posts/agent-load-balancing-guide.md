@@ -1,12 +1,12 @@
 # Blog Post: The Agent Engineer's Guide to Load Balancing
-## Published: January 17, 2027
+## Published: March 6, 2027
 ## Category: Engineering
 
 ---
 
 # The Agent Engineer's Guide to Load Balancing
 
-*Distribute. Scale. Stay up.*
+*Distribute load. Handle scale.*
 
 ---
 
@@ -23,15 +23,15 @@
 
 ## Implementation
 
-### 1. Nginx
+### 1. NGINX
 
 ```nginx
-upstream agent_backend {
+upstream agent_api {
     least_conn;
     
-    server agent1:8000 weight=5;
-    server agent2:8000 weight=5;
-    server agent3:8000 weight=3 backup;
+    server api-1:8000 weight=5;
+    server api-2:8000 weight=5;
+    server api-3:8000 weight=3 backup;
     
     keepalive 32;
 }
@@ -40,7 +40,7 @@ server {
     listen 80;
     
     location / {
-        proxy_pass http://agent_backend;
+        proxy_pass http://agent_api;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         
@@ -50,55 +50,44 @@ server {
 }
 ```
 
-### 2. Kubernetes
+### 2. Cloud Load Balancer
 
-```yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: agent-service
-spec:
-  selector:
-    app: agent
-  ports:
-    - port: 80
-      targetPort: 8000
-  type: LoadBalancer
-  sessionAffinity: None
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: agent
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: agent
-  template:
-    spec:
-      containers:
-        - name: agent
-          image: agent:latest
-          resources:
-            requests:
-              cpu: 100m
-              memory: 256Mi
+```python
+class AgentLoadBalancer:
+    def __init__(self, backends: list[str]):
+        self.backends = backends
+        self.healthy = set(backends)
+        self.current = 0
+    
+    def get_backend(self) -> str:
+        if not self.healthy:
+            raise Exception("No healthy backends")
+        
+        # Round robin
+        backend = list(self.healthy)[self.current % len(self.healthy)]
+        self.current += 1
+        return backend
+    
+    def mark_unhealthy(self, backend: str):
+        self.healthy.discard(backend)
+    
+    def mark_healthy(self, backend: str):
+        self.healthy.add(backend)
 ```
 
 ---
 
 ## The Load Balancing Checklist
 
-- [ ] Algorithm choice
+- [ ] Algorithm (round-robin, least-connections, IP-hash)
 - [ ] Health checks
-- [ ] Sticky sessions
+- [ ] Session stickiness
 - [ ] SSL termination
-- [ ] Rate limiting
-- [ ] Monitoring
 - [ ] Auto-scaling
-- [ ] Circuit breaker
-- [ ] Retry logic
+- [ ] Monitoring
+- [ ] Failover
+- [ ] Rate limiting
+- [ ] Geographic distribution
 - [ ] Documentation
 
 ---
@@ -107,14 +96,14 @@ spec:
 
 Load balancing:
 - Distributes traffic
-- Improves reliability
-- Enables scaling
-- Requires design
+- Improves availability
+- Requires health checks
+- Needs monitoring
 
 Balance load.
-Scale out.
-Stay available.
+Route smart.
+Scale horizontal.
 
 ---
 
-*ArQon Agentics balances everything. Get the framework at [github.com/ArQon-ai/agentstack](https://github.com/ArQon-ai/agentstack).*
+*ArQon Agentics balances load. Get the framework at [github.com/ArQon-ai/agentstack](https://github.com/ArQon-ai/agentstack).*
