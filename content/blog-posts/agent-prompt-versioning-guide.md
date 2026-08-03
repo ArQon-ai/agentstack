@@ -1,242 +1,114 @@
 # Blog Post: The Agent Engineer's Guide to Prompt Versioning
-## Published: November 12, 2026
+## Published: December 2, 2026
 ## Category: Engineering
 
 ---
 
 # The Agent Engineer's Guide to Prompt Versioning
 
-*Version your prompts like you version your code.*
+*Version prompts like code.*
 
 ---
 
 ## Why Version Prompts?
 
-### The Problem
+### Problems Without Versioning
 
-- Prompts change frequently
-- Hard to track what works
-- Difficult to roll back
-- No audit trail
-- Team confusion
-
-### The Solution
-
-- Version control for prompts
-- A/B testing
-- Rollback capability
-- Performance tracking
-- Team collaboration
+- Can't reproduce results
+- Don't know what changed
+- Can't roll back
+- Can't A/B test
+- Can't track performance
 
 ---
 
-## Prompt Versioning System
+## Versioning Strategy
 
-### Version Storage
+### Semantic Versioning
+
+```
+MAJOR.MINOR.PATCH
+
+1.0.0 → Initial
+1.1.0 → New feature
+1.1.1 → Bug fix
+2.0.0 → Breaking change
+```
+
+### Git-Based
 
 ```python
-from dataclasses import dataclass
-from datetime import datetime
+# prompts/v1.2.0/summarize.md
+## Summarize
 
-@dataclass
-class PromptVersion:
-    id: str
-    name: str
-    content: str
-    version: int
-    created_at: datetime
-    created_by: str
-    metrics: dict
-    is_active: bool
+Summarize the following text in 3 bullet points:
 
+{text}
+
+Rules:
+- Keep key points
+- Use simple language
+- Max 100 words
+```
+
+---
+
+## Prompt Registry
+
+```python
 class PromptRegistry:
-    def __init__(self, db):
-        self.db = db
+    def __init__(self, storage):
+        self.storage = storage
     
-    async def create_version(self, name: str, content: str, created_by: str) -> PromptVersion:
-        # Get next version number
-        versions = await self.get_versions(name)
-        next_version = max([v.version for v in versions], default=0) + 1
-        
-        prompt = PromptVersion(
-            id=str(uuid.uuid4()),
-            name=name,
-            content=content,
-            version=next_version,
-            created_at=datetime.now(),
-            created_by=created_by,
-            metrics={},
-            is_active=False
-        )
-        
-        await self.db.insert(prompt)
-        return prompt
+    async def register(self, name: str, version: str, prompt: str, metadata: dict):
+        await self.storage.store({
+            "name": name,
+            "version": version,
+            "prompt": prompt,
+            "metadata": metadata,
+            "created_at": datetime.now()
+        })
     
-    async def activate_version(self, prompt_id: str):
-        # Deactivate all versions of this prompt
-        prompt = await self.db.get(prompt_id)
-        await self.db.execute(
-            "UPDATE prompts SET is_active = false WHERE name = $1",
-            prompt.name
-        )
+    async def get(self, name: str, version: str = None) -> str:
+        if version:
+            return await self.storage.get(name, version)
         
-        # Activate new version
-        await self.db.execute(
-            "UPDATE prompts SET is_active = true WHERE id = $1",
-            prompt_id
-        )
+        # Get latest
+        return await self.storage.get_latest(name)
     
-    async def get_active_version(self, name: str) -> PromptVersion:
-        return await self.db.fetch_one(
-            "SELECT * FROM prompts WHERE name = $1 AND is_active = true",
-            name
-        )
-    
-    async def get_versions(self, name: str) -> list[PromptVersion]:
-        return await self.db.fetch(
-            "SELECT * FROM prompts WHERE name = $1 ORDER BY version DESC",
-            name
-        )
-```
-
-### Git Integration
-
-```python
-class GitPromptStore:
-    def __init__(self, repo_path: str):
-        self.repo_path = repo_path
-    
-    def save_prompt(self, name: str, content: str, message: str):
-        # Save to file
-        file_path = f"{self.repo_path}/prompts/{name}.md"
-        with open(file_path, "w") as f:
-            f.write(content)
-        
-        # Git commit
-        subprocess.run(["git", "add", file_path], cwd=self.repo_path)
-        subprocess.run(["git", "commit", "-m", message], cwd=self.repo_path)
-    
-    def get_prompt(self, name: str, commit: str = None) -> str:
-        file_path = f"prompts/{name}.md"
-        
-        if commit:
-            result = subprocess.run(
-                ["git", "show", f"{commit}:{file_path}"],
-                cwd=self.repo_path,
-                capture_output=True,
-                text=True
-            )
-            return result.stdout
-        else:
-            with open(f"{self.repo_path}/{file_path}") as f:
-                return f.read()
-```
-
----
-
-## A/B Testing Prompts
-
-```python
-class PromptABTest:
-    def __init__(self, registry: PromptRegistry):
-        self.registry = registry
-    
-    async def run_experiment(self, prompt_name: str, versions: list[str]):
-        # Create experiment
-        experiment = {
-            "name": f"{prompt_name}-ab-test",
-            "variants": versions,
-            "weights": [1.0 / len(versions)] * len(versions)
-        }
-        
-        # Assign users to variants
-        for user_id in await self.get_test_users():
-            variant = self.assign_variant(experiment, user_id)
-            prompt = await self.registry.get_version(prompt_name, variant)
-            
-            # Run prompt
-            response = await self.run_prompt(prompt, user_id)
-            
-            # Track metrics
-            await self.track_metrics(experiment["name"], variant, response)
-    
-    def assign_variant(self, experiment: dict, user_id: str) -> str:
-        hash_val = int(hashlib.md5(
-            f"{experiment['name']}:{user_id}".encode()
-        ).hexdigest(), 16)
-        
-        index = hash_val % len(experiment["variants"])
-        return experiment["variants"][index]
-```
-
----
-
-## Performance Tracking
-
-```python
-class PromptPerformanceTracker:
-    def __init__(self):
-        self.metrics = {}
-    
-    async def track(self, prompt_id: str, response: str, duration: float):
-        if prompt_id not in self.metrics:
-            self.metrics[prompt_id] = {
-                "runs": 0,
-                "total_latency": 0,
-                "successes": 0,
-                "failures": 0
-            }
-        
-        self.metrics[prompt_id]["runs"] += 1
-        self.metrics[prompt_id]["total_latency"] += duration
-        
-        # Check if response is valid
-        if await self.is_valid(response):
-            self.metrics[prompt_id]["successes"] += 1
-        else:
-            self.metrics[prompt_id]["failures"] += 1
-    
-    def get_stats(self, prompt_id: str) -> dict:
-        m = self.metrics.get(prompt_id, {})
-        runs = m.get("runs", 0)
-        
-        return {
-            "runs": runs,
-            "avg_latency": m.get("total_latency", 0) / max(runs, 1),
-            "success_rate": m.get("successes", 0) / max(runs, 1),
-            "failure_rate": m.get("failures", 0) / max(runs, 1)
-        }
+    async def list_versions(self, name: str) -> list[str]:
+        return await self.storage.list_versions(name)
 ```
 
 ---
 
 ## The Prompt Versioning Checklist
 
-- [ ] Store prompts in version control
-- [ ] Track changes
-- [ ] A/B test versions
-- [ ] Measure performance
-- [ ] Enable rollbacks
+- [ ] Use semantic versioning
+- [ ] Store in Git
+- [ ] Track performance
 - [ ] Document changes
-- [ ] Team access
-- [ ] Review process
-- [ ] Automated testing
-- [ ] Performance monitoring
+- [ ] Support rollbacks
+- [ ] A/B test versions
+- [ ] Monitor metrics
+- [ ] Alert on regression
+- [ ] Code review prompts
+- [ ] Test thoroughly
 
 ---
 
 ## Conclusion
 
 Prompt versioning:
-- Enables experimentation
-- Supports collaboration
-- Prevents regressions
+- Enables reproducibility
+- Supports testing
 - Improves quality
+- Reduces risk
 
 Version everything.
-Test thoroughly.
-Measure always.
+Test every change.
+Track performance.
 
 ---
 
-*ArQon Agentics versions all prompts. Get the framework at [github.com/ArQon-ai/agentstack](https://github.com/ArQon-ai/agentstack).*
+*ArQon Agentics versions prompts. Get the framework at [github.com/ArQon-ai/agentstack](https://github.com/ArQon-ai/agentstack).*
