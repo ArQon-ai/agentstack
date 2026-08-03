@@ -1,12 +1,12 @@
 # Blog Post: The Agent Engineer's Guide to API Design
-## Published: October 31, 2026
+## Published: December 16, 2026
 ## Category: Engineering
 
 ---
 
 # The Agent Engineer's Guide to API Design
 
-*Design APIs that agents love to use.*
+*Design APIs agents love.*
 
 ---
 
@@ -15,205 +15,98 @@
 ### 1. RESTful Design
 
 ```python
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+@app.get("/agents")
+async def list_agents():
+    return await db.get_agents()
 
-app = FastAPI()
+@app.post("/agents")
+async def create_agent(request: CreateAgentRequest):
+    return await db.create_agent(request)
 
-# Models
-class AgentRequest(BaseModel):
-    query: str
-    context: dict | None = None
-    model: str = "gpt-4o"
-    temperature: float = 0.7
+@app.get("/agents/{agent_id}")
+async def get_agent(agent_id: str):
+    return await db.get_agent(agent_id)
 
-class AgentResponse(BaseModel):
-    id: str
-    content: str
-    model: str
-    tokens_used: int
-    cost: float
-    latency_ms: int
+@app.put("/agents/{agent_id}")
+async def update_agent(agent_id: str, request: UpdateAgentRequest):
+    return await db.update_agent(agent_id, request)
 
-# Endpoints
-@app.post("/agents/{agent_id}/run", response_model=AgentResponse)
-async def run_agent(agent_id: str, request: AgentRequest):
-    agent = await get_agent(agent_id)
-    if not agent:
-        raise HTTPException(status_code=404, detail="Agent not found")
-    
-    start = time.time()
-    result = await agent.run(request.query, request.context)
-    latency = int((time.time() - start) * 1000)
-    
-    return AgentResponse(
-        id=str(uuid.uuid4()),
-        content=result.content,
-        model=request.model,
-        tokens_used=result.tokens,
-        cost=result.cost,
-        latency_ms=latency
-    )
-
-@app.get("/agents/{agent_id}/runs/{run_id}")
-async def get_run(agent_id: str, run_id: str):
-    run = await get_run_by_id(run_id)
-    if not run or run.agent_id != agent_id:
-        raise HTTPException(status_code=404, detail="Run not found")
-    
-    return run
+@app.delete("/agents/{agent_id}")
+async def delete_agent(agent_id: str):
+    await db.delete_agent(agent_id)
+    return {"status": "deleted"}
 ```
 
-### 2. Async Processing
+### 2. Error Handling
 
 ```python
-@app.post("/agents/{agent_id}/run/async")
-async def run_agent_async(agent_id: str, request: AgentRequest):
-    task_id = generate_task_id()
-    
-    # Queue task
-    await task_queue.submit({
-        "task_id": task_id,
-        "agent_id": agent_id,
-        "query": request.query,
-        "context": request.context
-    })
-    
-    return {"task_id": task_id, "status": "queued"}
+class APIError(Exception):
+    def __init__(self, status_code: int, detail: str):
+        self.status_code = status_code
+        self.detail = detail
 
-@app.get("/tasks/{task_id}")
-async def get_task_status(task_id: str):
-    task = await task_queue.get_status(task_id)
-    
+@app.exception_handler(APIError)
+async def handle_api_error(request, exc):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"error": exc.detail}
+    )
+```
+
+---
+
+## API Best Practices
+
+### Versioning
+
+```
+/v1/agents
+/v2/agents
+```
+
+### Pagination
+
+```python
+@app.get("/agents")
+async def list_agents(page: int = 1, limit: int = 20):
+    agents = await db.get_agents(page=page, limit=limit)
     return {
-        "task_id": task_id,
-        "status": task.status,
-        "result": task.result if task.status == "completed" else None,
-        "error": task.error if task.status == "failed" else None
+        "data": agents,
+        "page": page,
+        "limit": limit,
+        "total": await db.count_agents()
     }
 ```
 
 ---
 
-## Authentication
-
-### API Keys
-
-```python
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-
-security = HTTPBearer()
-
-async def verify_api_key(credentials: HTTPAuthorizationCredentials = Depends(security)):
-    token = credentials.credentials
-    
-    # Verify against database
-    user = await get_user_by_api_key(token)
-    if not user:
-        raise HTTPException(status_code=401, detail="Invalid API key")
-    
-    # Check rate limit
-    allowed = await check_rate_limit(user.id)
-    if not allowed:
-        raise HTTPException(status_code=429, detail="Rate limit exceeded")
-    
-    return user
-
-@app.post("/agents/{agent_id}/run")
-async def run_agent(
-    agent_id: str,
-    request: AgentRequest,
-    user: User = Depends(verify_api_key)
-):
-    # Process request
-    pass
-```
-
----
-
-## Rate Limiting
-
-```python
-from fastapi import Request
-from slowapi import Limiter
-
-limiter = Limiter(key_func=get_remote_address)
-
-@app.post("/agents/{agent_id}/run")
-@limiter.limit("10/minute")
-async def run_agent(request: Request, agent_id: str, body: AgentRequest):
-    pass
-```
-
----
-
-## Error Responses
-
-```python
-class APIError(BaseModel):
-    error: str
-    message: str
-    details: dict | None = None
-    request_id: str
-
-@app.exception_handler(AgentError)
-async def agent_error_handler(request: Request, exc: AgentError):
-    return JSONResponse(
-        status_code=500,
-        content=APIError(
-            error="agent_error",
-            message=str(exc),
-            request_id=request.state.request_id
-        ).dict()
-    )
-```
-
----
-
-## Versioning
-
-```python
-# URL versioning
-@app.post("/v1/agents/{agent_id}/run")
-async def run_agent_v1(agent_id: str, request: V1AgentRequest):
-    pass
-
-@app.post("/v2/agents/{agent_id}/run")
-async def run_agent_v2(agent_id: str, request: V2AgentRequest):
-    pass
-```
-
----
-
-## The API Checklist
+## The API Design Checklist
 
 - [ ] RESTful endpoints
-- [ ] Async support
+- [ ] Error handling
+- [ ] Versioning
+- [ ] Pagination
 - [ ] Authentication
 - [ ] Rate limiting
-- [ ] Error handling
-- [ ] Input validation
-- [ ] Output formatting
-- [ ] Versioning
 - [ ] Documentation
 - [ ] Testing
 - [ ] Monitoring
-- [ ] Security
+- [ ] Deprecation strategy
 
 ---
 
 ## Conclusion
 
 API design:
-- Is the interface
-- Affects adoption
-- Enables scaling
-- Requires discipline
+- Enables integration
+- Requires planning
+- Needs maintenance
+- Drives adoption
 
-Design for developers.
-Document thoroughly.
+Design well.
+Document clearly.
 Version carefully.
 
 ---
 
-*ArQon Agentics designs agent APIs for production. Get the framework at [github.com/ArQon-ai/agentstack](https://github.com/ArQon-ai/agentstack).*
+*ArQon Agentics designs APIs. Get the framework at [github.com/ArQon-ai/agentstack](https://github.com/ArQon-ai/agentstack).*
