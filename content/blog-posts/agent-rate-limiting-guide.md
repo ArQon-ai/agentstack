@@ -1,136 +1,121 @@
 # Blog Post: The Agent Engineer's Guide to Rate Limiting
-## Published: December 6, 2026
+## Published: February 2, 2027
 ## Category: Engineering
 
 ---
 
 # The Agent Engineer's Guide to Rate Limiting
 
-*Protect your agents. Control costs.*
+*Protect resources. Ensure fairness.*
 
 ---
 
-## Why Rate Limit?
+## Why Rate Limiting?
 
-### Cost Control
-
-- Prevent runaway costs
-- Protect budget
-- Enable scaling
-
-### Fairness
+### Benefits
 
 - Prevent abuse
-- Ensure availability
-- Protect users
+- Ensure fairness
+- Control costs
+- Maintain stability
 
 ---
 
-## Rate Limiting Strategies
+## Implementation
 
 ### 1. Token Bucket
 
 ```python
+import redis
+import time
+
 class TokenBucket:
-    def __init__(self, rate: int, capacity: int):
-        self.rate = rate
+    def __init__(self, redis_client, key: str, capacity: int, refill_rate: float):
+        self.redis = redis_client
+        self.key = key
         self.capacity = capacity
-        self.tokens = capacity
-        self.last_update = time.time()
+        self.refill_rate = refill_rate
     
-    def consume(self, tokens: int = 1) -> bool:
+    def is_allowed(self, tokens: int = 1) -> bool:
+        pipe = self.redis.pipeline()
         now = time.time()
-        elapsed = now - self.last_update
         
-        # Add tokens
-        self.tokens = min(
+        # Get current state
+        pipe.hmget(self.key, 'tokens', 'last_refill')
+        result = pipe.execute()
+        
+        current_tokens = float(result[0][0] or self.capacity)
+        last_refill = float(result[0][1] or now)
+        
+        # Calculate new tokens
+        elapsed = now - last_refill
+        new_tokens = min(
             self.capacity,
-            self.tokens + elapsed * self.rate
+            current_tokens + elapsed * self.refill_rate
         )
-        self.last_update = now
         
-        # Consume
-        if self.tokens >= tokens:
-            self.tokens -= tokens
+        # Check and update
+        if new_tokens >= tokens:
+            pipe.hmset(self.key, {
+                'tokens': new_tokens - tokens,
+                'last_refill': now
+            })
+            pipe.execute()
             return True
         
         return False
 ```
 
-### 2. Sliding Window
+### 2. Redis Rate Limiter
 
 ```python
-class SlidingWindow:
-    def __init__(self, window: int, limit: int):
-        self.window = window
-        self.limit = limit
-        self.requests = []
+class RateLimiter:
+    def __init__(self, redis_client):
+        self.redis = redis_client
     
-    def allow(self) -> bool:
-        now = time.time()
+    async def check_rate_limit(self, key: str, limit: int, window: int) -> tuple[bool, int]:
+        current = await self.redis.get(key)
         
-        # Remove old requests
-        self.requests = [
-            req for req in self.requests
-            if now - req < self.window
-        ]
+        if current is None:
+            await self.redis.setex(key, window, 1)
+            return True, limit - 1
         
-        # Check limit
-        if len(self.requests) < self.limit:
-            self.requests.append(now)
-            return True
+        current = int(current)
+        if current >= limit:
+            return False, 0
         
-        return False
-```
-
-### 3. Per-User Limits
-
-```python
-class UserRateLimiter:
-    def __init__(self):
-        self.buckets: dict[str, TokenBucket] = {}
-    
-    def get_bucket(self, user_id: str) -> TokenBucket:
-        if user_id not in self.buckets:
-            self.buckets[user_id] = TokenBucket(
-                rate=10,  # 10 requests/minute
-                capacity=100  # burst
-            )
-        return self.buckets[user_id]
-    
-    def allow_request(self, user_id: str) -> bool:
-        bucket = self.get_bucket(user_id)
-        return bucket.consume()
+        await self.redis.incr(key)
+        return True, limit - current - 1
 ```
 
 ---
 
 ## The Rate Limiting Checklist
 
-- [ ] Define limits
-- [ ] Choose algorithm
-- [ ] Per-user tracking
-- [ ] Global limits
-- [ ] Burst handling
-- [ ] Error responses
-- [ ] Headers (X-RateLimit-*)
+- [ ] Algorithm choice
+- [ ] Limit configuration
+- [ ] Key design
+- [ ] Headers
+- [ ] Error handling
 - [ ] Monitoring
-- [ ] Alerts
+- [ ] Testing
 - [ ] Documentation
+- [ ] Gradual rollout
+- [ ] Customer communication
 
 ---
 
 ## Conclusion
 
 Rate limiting:
-- Controls costs
-- Prevents abuse
+- Protects resources
 - Ensures fairness
-- Requires planning
+- Controls costs
+- Requires tuning
 
-Limit everything.
-Monitor always.
-Scale safely.
+Limit requests.
+Protect services.
+Stay stable.
 
 ---
 
