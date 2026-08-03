@@ -1,12 +1,12 @@
 # Blog Post: The Agent Engineer's Guide to API Versioning
-## Published: February 6, 2027
+## Published: March 10, 2027
 ## Category: Engineering
 
 ---
 
 # The Agent Engineer's Guide to API Versioning
 
-*Version well. Break never.*
+*Version well. Migrate easy.*
 
 ---
 
@@ -14,10 +14,10 @@
 
 ### Benefits
 
-- Backward compatibility
+- Breaking changes safe
 - Gradual migration
+- Backward compatible
 - Clear contracts
-- Stable integrations
 
 ---
 
@@ -33,57 +33,75 @@ app = FastAPI()
 # v1 router
 v1 = APIRouter(prefix="/v1")
 
-@v1.post("/agents/{id}/run")
-async def run_agent_v1(id: str, query: str):
-    return await legacy_agent.run(id, query)
+@v1.get("/agents")
+async def list_agents_v1():
+    # Old format
+    return [{"id": 1, "name": "Agent"}]
 
 # v2 router
 v2 = APIRouter(prefix="/v2")
 
-@v2.post("/agents/{id}/run")
-async def run_agent_v2(id: str, query: str, context: dict = None):
-    return await new_agent.run(id, query, context)
+@v2.get("/agents")
+async def list_agents_v2():
+    # New format with pagination
+    return {
+        "items": [{"id": 1, "name": "Agent"}],
+        "total": 100,
+        "page": 1
+    }
 
 app.include_router(v1)
 app.include_router(v2)
 ```
 
-### 2. Deprecation Strategy
+### 2. Header Versioning
 
 ```python
-class DeprecationMiddleware:
-    def __init__(self, app):
-        self.app = app
+from fastapi import Header, HTTPException
+
+@app.get("/agents")
+async def list_agents(
+    x_api_version: str = Header(default="1.0")
+):
+    if x_api_version == "1.0":
+        return [{"id": 1, "name": "Agent"}]
+    elif x_api_version == "2.0":
+        return {
+            "items": [{"id": 1, "name": "Agent"}],
+            "total": 100
+        }
+    else:
+        raise HTTPException(status_code=400, detail="Unsupported version")
+```
+
+### 3. Deprecation Strategy
+
+```python
+from fastapi import Response
+
+@app.get("/v1/agents", deprecated=True)
+async def list_agents_v1(response: Response):
+    response.headers["Deprecation"] = "true"
+    response.headers["Sunset"] = "Sat, 01 Jul 2027 00:00:00 GMT"
+    response.headers["Link"] = '</v2/agents>; rel="successor-version"'
     
-    async def __call__(self, scope, receive, send):
-        if scope["path"].startswith("/v1/"):
-            # Add deprecation headers
-            headers = scope.get("headers", [])
-            headers.append(
-                (b"Deprecation", b"true")
-            )
-            headers.append(
-                (b"Sunset", b"2027-06-01")
-            )
-            scope["headers"] = headers
-        
-        await self.app(scope, receive, send)
+    return [{"id": 1, "name": "Agent"}]
 ```
 
 ---
 
-## The Versioning Checklist
+## The API Versioning Checklist
 
 - [ ] Versioning strategy
-- [ ] URL design
-- [ ] Header handling
-- [ ] Documentation
+- [ ] URL/header design
+- [ ] Backward compatibility
 - [ ] Deprecation policy
-- [ ] Migration guide
-- [ ] Testing
-- [ ] Monitoring
-- [ ] Communication
 - [ ] Sunset dates
+- [ ] Migration guide
+- [ ] Documentation
+- [ ] Monitoring
+- [ ] Testing
+- [ ] Communication
 
 ---
 
@@ -91,13 +109,13 @@ class DeprecationMiddleware:
 
 API versioning:
 - Enables evolution
-- Protects users
+- Protects consumers
 - Requires planning
 - Needs communication
 
 Version clearly.
-Deprecate gently.
-Remove rarely.
+Deprecate gracefully.
+Migrate smoothly.
 
 ---
 
