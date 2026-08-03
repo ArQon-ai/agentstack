@@ -1,12 +1,12 @@
-# SEO Article: AI Agent Testing: Chaos Engineering
-**Target Keywords:** agent chaos engineering, resilience testing, LLM fault tolerance  
-**Published:** January 20, 2027
+# SEO Article: AI Agent Reliability: Chaos Engineering
+**Target Keywords:** agent chaos engineering, resilience testing, LLM failure injection  
+**Published:** March 1, 2027
 
 ---
 
-# AI Agent Testing: Chaos Engineering
+# AI Agent Reliability: Chaos Engineering
 
-*Break things on purpose.*
+*Break things. Fix them. Repeat.*
 
 ---
 
@@ -15,97 +15,133 @@
 ### Benefits
 
 - Find weaknesses
-- Build resilience
-- Reduce outages
-- Increase confidence
+- Build confidence
+- Prevent outages
+- Improve recovery
 
 ---
 
 ## Implementation
 
-### 1. Chaos Monkey
+### 1. Failure Injection
 
 ```python
+import random
+import asyncio
+
 class ChaosMonkey:
-    def __init__(self, agent_system):
-        self.system = agent_system
-        self.experiments = [
-            self.kill_random_pod,
-            self.delay_responses,
-            self.drop_messages,
-            self.corrupt_data
+    def __init__(self, enabled: bool = False):
+        self.enabled = enabled
+        self.scenarios = [
+            self.inject_latency,
+            self.inject_error,
+            self.inject_timeout,
+            self.inject_memory_pressure
         ]
     
-    async def run_experiment(self):
-        experiment = random.choice(self.experiments)
-        await experiment()
+    async def inject_latency(self, delay_ms: int = 5000):
+        """Add random latency"""
+        if random.random() < 0.1:  # 10% chance
+            await asyncio.sleep(delay_ms / 1000)
     
-    async def kill_random_pod(self):
-        pod = random.choice(self.system.pods)
-        await pod.terminate()
-        await self.verify_recovery()
+    async def inject_error(self, error_rate: float = 0.05):
+        """Randomly fail requests"""
+        if random.random() < error_rate:
+            raise Exception("Chaos: Random failure injected")
     
-    async def delay_responses(self):
-        self.system.latency_injector.enable(5000)  # 5s delay
-        await asyncio.sleep(60)
-        self.system.latency_injector.disable()
+    async def inject_timeout(self, timeout_ms: int = 100):
+        """Force timeouts"""
+        await asyncio.sleep(timeout_ms / 1000)
+        raise TimeoutError("Chaos: Timeout injected")
     
-    async def verify_recovery(self):
-        # Verify system recovers within SLO
-        await asyncio.wait_for(
-            self.system.is_healthy(),
-            timeout=30
-        )
+    async def wrap(self, func, *args, **kwargs):
+        if not self.enabled:
+            return await func(*args, **kwargs)
+        
+        # Randomly apply a scenario
+        if random.random() < 0.2:  # 20% chance of chaos
+            scenario = random.choice(self.scenarios)
+            await scenario()
+        
+        return await func(*args, **kwargs)
 ```
 
-### 2. Steady State
+### 2. Game Day
 
 ```python
-class SteadyStateMonitor:
-    def __init__(self):
-        self.metrics = {
-            'error_rate': 0.01,
-            'p95_latency': 2000,
-            'success_rate': 0.99
-        }
+class GameDay:
+    def __init__(self, agent_system):
+        self.system = agent_system
+        self.tests = []
     
-    def is_steady(self) -> bool:
-        current = self.get_current_metrics()
-        return all(
-            current[k] <= self.metrics[k]
-            for k in self.metrics
-        )
+    def add_test(self, name: str, failure: Callable, assertion: Callable):
+        self.tests.append({"name": name, "failure": failure, "assertion": assertion})
+    
+    async def run(self):
+        results = []
+        
+        for test in self.tests:
+            print(f"Running: {test['name']}")
+            
+            # Inject failure
+            await test["failure"](self.system)
+            
+            # Check recovery
+            try:
+                await test["assertion"](self.system)
+                results.append({"name": test["name"], "status": "PASS"})
+            except AssertionError as e:
+                results.append({"name": test["name"], "status": "FAIL", "error": str(e)})
+        
+        return results
+
+# Usage
+game_day = GameDay(agent_system)
+
+game_day.add_test(
+    name="LLM timeout recovery",
+    failure=lambda s: s.breaker.trip("openai"),
+    assertion=lambda s: s.generate("test")  # Should fallback
+)
+
+game_day.add_test(
+    name="Database failure",
+    failure=lambda s: s.db.disconnect(),
+    assertion=lambda s: s.cache.hit_rate > 0.8  # Should use cache
+)
+
+results = await game_day.run()
 ```
 
 ---
 
 ## The Chaos Engineering Checklist
 
-- [ ] Hypothesis
-- [ ] Steady state
-- [ ] Experiment design
-- [ ] Blast radius
-- [ ] Rollback plan
+- [ ] Failure scenarios
+- [ ] Injection points
 - [ ] Monitoring
-- [ ] Results analysis
-- [ ] Fixes
-- [ ] Automation
+- [ ] Rollback plan
+- [ ] Safety checks
+- [ ] Game days
 - [ ] Documentation
+- [ ] Team training
+- [ ] Metrics
+- [ ] Iteration
 
 ---
 
 ## Conclusion
 
 Chaos engineering:
-- Finds failures
+- Finds weaknesses
 - Builds resilience
-- Requires planning
-- Needs safety
+- Requires safety
+- Needs practice
 
 Break things.
-Learn fast.
-Fix before customers notice.
+Fix them.
+Build confidence.
 
 ---
 
-*ArQon Agentics breaks things on purpose. Get the framework at [github.com/ArQon-ai/agentstack](https://github.com/ArQon-ai/agentstack).*
+*ArQon Agentics practices chaos. Get the framework at [github.com/ArQon-ai/agentstack](https://github.com/ArQon-ai/agentstack).*
